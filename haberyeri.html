@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Cncitem Haberyeri – CNC ve Sanayi Haberleri</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" type="image/png" href="images/cncclogo.png">
+
+  <style>
+    :root{
+      --bg:#f3f4f6;
+      --white:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#e2e8f0;
+      --primary:#2563eb;
+      --accent:#f97316;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;}
+    a{text-decoration:none;color:inherit;}
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      padding-top:100px;
+    }
+
+    .container{max-width:1240px;margin:0 auto;padding:0 16px;}
+
+    /* ----- ÜST KISIM ----- */
+    .top-shell{position:fixed;top:0;left:0;right:0;z-index:50;}
+    .top-bar{
+      background:#020617;color:#e5e7eb;font-size:12px;
+    }
+    .top-bar-inner{
+      max-width:1240px;margin:0 auto;padding:6px 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    header{background:#ffffff;border-bottom:1px solid #e5e7eb;}
+    .nav{
+      max-width:1240px;margin:0 auto;padding:10px 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:24px;
+    }
+
+    .pazar-logo{height:60px;}
+
+    .main-nav{flex:1;display:flex;justify-content:center;}
+    .main-nav ul{
+      list-style:none;display:flex;gap:32px;
+      font-size:13px;font-weight:600;letter-spacing:.16em;
+    }
+    .main-nav a{color:#111827;}
+    .main-nav a:hover{color:var(--primary);}
+    .main-nav a.active{color:var(--primary);}
+
+    .nav-right{display:flex;align-items:center;gap:12px;}
+
+    .nav-card{
+      display:flex;align-items:center;gap:10px;background:#f9fafb;
+      border-radius:10px;border:1px solid #e5e7eb;padding:8px 12px;
+      box-shadow:0 4px 12px rgba(15,23,42,.12);cursor:pointer;font-size:13px;
+    }
+
+    .nav-icon{
+      width:32px;height:32px;background:#e5e7eb;border-radius:8px;
+      display:flex;align-items:center;justify-content:center;
+    }
+
+    .nav-icon svg{width:22px;height:22px;stroke:#4b5563;stroke-width:1.8;fill:none;}
+
+    .lang-select{
+      border-radius:999px;border:1px solid #e5e7eb;padding:6px 10px;font-size:12px;background:white;
+    }
+
+    /* ----- ÜST BANNER REKLAM ----- */
+    .ad-top{
+      margin:14px auto 12px;max-width:1240px;padding:0 16px;
+    }
+    .ad-box{
+      border-radius:12px;border:2px dashed #cbd5f5;height:90px;
+      display:flex;align-items:center;justify-content:center;
+      background:#eff6ff;color:#475569;font-size:12px;text-align:center;
+    }
+
+    /* ----- HERO ----- */
+    .hero{
+      background:#0f172a;color:#e5e7eb;border-radius:18px;padding:18px;margin-bottom:14px;
+      display:grid;grid-template-columns:2fr 1.1fr;gap:20px;
+      box-shadow:0 18px 36px rgba(15,23,42,.75);
+    }
+
+    .hero-label{
+      background:#1d4ed8;color:white;border-radius:999px;
+      padding:4px 10px;display:inline-block;font-size:11px;margin-bottom:8px;
+    }
+
+    .hero-title{font-size:24px;font-weight:800;margin-bottom:6px;}
+    .hero-title span{color:#fbbf24;}
+    .hero-meta{font-size:11px;color:#cbd5f5;margin-bottom:10px;}
+    .hero-text{font-size:13px;max-width:520px;}
+
+    .hero-right{
+      background:#020617;border-radius:12px;position:relative;
+    }
+    .hero-overlay{
+      position:absolute;inset:0;font-size:12px;display:flex;
+      align-items:center;justify-content:center;text-align:center;padding:10px;
+      color:#e5e7eb;
+    }
+
+    /* ----- HABER FİLTRE ----- */
+    .toolbar{
+      margin:8px 0 10px;display:flex;flex-wrap:wrap;
+      align-items:center;justify-content:space-between;gap:10px;
+    }
+    .tabs{display:flex;gap:6px;flex-wrap:wrap;}
+    .tab-pill{
+      padding:7px 12px;background:#e5e7eb;border:1px solid #cbd5f5;
+      border-radius:999px;font-size:12px;cursor:pointer;
+    }
+    .tab-pill.active{background:#2563eb;color:white;}
+
+    .search-small{
+      display:flex;align-items:center;gap:6px;background:white;
+      border-radius:999px;border:1px solid #e2e8f0;padding:4px 10px;
+    }
+    .search-small input{
+      border:none;outline:none;font-size:12px;
+    }
+
+    /* ----- LAYOUT ----- */
+    .layout{display:grid;grid-template-columns:1fr 300px;gap:16px;}
+
+    /* ----- HABER LİSTESİ ----- */
+    .news-list{display:flex;flex-direction:column;gap:14px;}
+
+    .news-card{
+      background:white;border-radius:14px;border:1px solid var(--border);
+      display:flex;gap:12px;padding:12px;box-shadow:0 10px 22px rgba(15,23,42,.1);
+      cursor:pointer;
+    }
+    .thumb{
+      width:150px;height:90px;border-radius:10px;background:#1e293b;
+      display:flex;align-items:center;justify-content:center;color:white;font-size:11px;
+    }
+    .news-body{flex:1;display:flex;flex-direction:column;gap:4px;}
+    .news-tag-badge{
+      background:#dbeafe;padding:2px 7px;border-radius:999px;font-size:10px;color:#1d4ed8;
+    }
+    .news-title{font-size:15px;font-weight:700;}
+    .news-meta{font-size:11px;color:var(--muted);}
+    .news-excerpt{font-size:13px;color:#111827;}
+    .news-footer{display:flex;justify-content:space-between;font-size:11px;}
+
+    .news-readmore{color:#2563eb;font-weight:600;}
+
+    .news-ad{
+      background:#eff6ff;border:2px dashed #cbd5f5;padding:10px;border-radius:12px;
+      text-align:center;font-size:11px;color:#475569;
+    }
+
+    /* ----- SAĞ REKLAM ----- */
+    .sidebar{display:flex;flex-direction:column;gap:14px;}
+    .ad-side{
+      height:300px;background:#fff7ed;border:2px dashed #fcd34d;
+      display:flex;align-items:center;justify-content:center;color:#b45309;font-size:12px;
+      border-radius:12px;text-align:center;
+    }
+    .box{
+      background:white;border-radius:14px;border:1px solid var(--border);
+      padding:12px;box-shadow:0 8px 18px rgba(15,23,42,.08);
+    }
+    .box h3{font-size:13px;margin-bottom:6px;}
+    .popular-list{list-style:none;font-size:12px;display:flex;flex-direction:column;gap:4px;}
+    .popular-list a{color:#2563eb;}
+
+    /* ----- FOOTER ----- */
+    .footer-big{background:#0f172a;color:#e5e7eb;margin-top:30px;padding-top:20px;}
+    .footer-grid{
+      max-width:1240px;margin:0 auto;
+      display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+    }
+    .footer-col-title{font-weight:700;margin-bottom:5px;}
+    .footer-list li{font-size:12px;margin-bottom:4px;cursor:pointer;}
+    .footer-list li:hover{text-decoration:underline;}
+
+    .footer-bottom{
+      background:#020617;padding:10px 0;margin-top:15px;
+      font-size:11px;color:#cbd5f5;
+    }
+    .footer-bottom-inner{
+      max-width:1240px;margin:0 auto;padding:0 16px;
+      display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    }
+
+    .back-to-top{
+      position:fixed;bottom:24px;right:24px;
+      width:42px;height:42px;border-radius:999px;border:none;
+      background:#020617;color:white;display:none;
+      align-items:center;justify-content:center;font-size:18px;
+      cursor:pointer;box-shadow:0 14px 32px rgba(15,23,42,.7);
+    }
+
+    @media(max-width:900px){
+      body{padding-top:160px;}
+      .layout{grid-template-columns:1fr;}
+      .hero{grid-template-columns:1fr;}
+      .nav-right{display:none;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-shell">
+  <div class="top-bar">
+    <div class="top-bar-inner">
+      <div>CNC ve Sanayi sektöründen güncel son dakika haberleri</div>
+      <div>Show Haber Sanayi · TV100 Sanayi tarzı içerikler</div>
+    </div>
+  </div>
+
+  <header>
+    <nav class="nav">
+      <a href="index.html">
+        <img src="images/cnclogo.png" class="pazar-logo">
+      </a>
+
+      <nav class="main-nav">
+        <ul>
+          <li><a href="pazaryeri.html">PAZARYERİ</a></li>
+          <li><a href="fasonyeri.html">FASONYERİ</a></li>
+          <li><a href="haberyeri.html" class="active">HABERYERİ</a></li>
+          <li><a href="#">KAMPANYALAR</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-right">
+        <a href="hesabim.html" class="nav-card">
+          <div class="nav-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4z"/>
+              <path d="M5 20c0-3 3-5 7-5s7 2 7 5"/>
+            </svg>
+          </div>
+          <div>Hesabım</div>
+        </a>
+
+        <select class="lang-select">
+          <option>TR</option>
+          <option>EN</option>
+        </select>
+      </div>
+    </nav>
+  </header>
+</div>
+
+<!-- ÜST REKLAM -->
+<div class="ad-top">
+  <div class="ad-box">
+    728x90 ÜST BANNER REKLAM ALANI<br>
+    (Google AdSense kodu buraya)
+  </div>
+</div>
+
+<main>
+  <div class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <span class="hero-label">SANAYİ ÖZEL HABER</span>
+        <h1 class="hero-title">Fabrikalarda Vardiya Krizi: <span>Enerji Maliyeti %30 Arttı</span></h1>
+        <div class="hero-meta">Cncitem Haberyeri • 24 Kasım 2025</div>
+        <p class="hero-text">
+          Show Haber Sanayi ve TV100 Sanayi tarzında hazırlanan özel dosyamız.
+          CNC atölyeleri enerji maliyetleriyle mücadele ediyor.
+        </p>
+      </div>
+      <div class="hero-right">
+        <div class="hero-overlay">Kapak görseli/video alanı</div>
+      </div>
+    </section>
+
+    <!-- FİLTRELER -->
+    <div class="toolbar">
+      <div class="tabs">
+        <button class="tab-pill active" data-filter="all">Tümü</button>
+        <button class="tab-pill" data-filter="cnc">CNC</button>
+        <button class="tab-pill" data-filter="osb">OSB & Fabrika</button>
+        <button class="tab-pill" data-filter="enerji">Enerji</button>
+        <button class="tab-pill" data-filter="roportaj">Röportaj</button>
+      </div>
+
+      <div class="search-small">
+        🔎 <input placeholder="Haber ara (ör: enerji)">
+      </div>
+    </div>
+
+    <!-- LAYOUT -->
+    <section class="layout">
+
+      <!-- SOL HABERLER -->
+      <div class="news-list">
+
+        <article class="news-card" data-cat="enerji">
+          <div class="thumb">Enerji OSB görüntüsü</div>
+          <div class="news-body">
+            <span class="news-tag-badge">ENERJİ</span>
+            <h2 class="news-title">OSB’de enerji maliyet krizi: Üretim geceye kaydırıldı</h2>
+            <div class="news-meta">24.11.2025 - Özel Haber</div>
+            <p class="news-excerpt">Elektrik zamları sonrası yüzlerce atölye üretimi gece saatlerine çekti...</p>
+            <div class="news-footer">
+              <span>3 dk okuma</span>
+              <a href="haber-detay.html" class="news-readmore">Devamını oku</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="news-card" data-cat="cnc">
+          <div class="thumb">CNC 5 eksen</div>
+          <div class="news-body">
+            <span class="news-tag-badge">CNC</span>
+            <h2 class="news-title">5 Eksen tezgâhlarda hız rekoru</h2>
+            <div class="news-meta">23.11.2025</div>
+            <p class="news-excerpt">Yeni otomatik takım değiştiriciler çevrim süresini %22 düşürdü...</p>
+            <div class="news-footer">
+              <span>4 dk okuma</span>
+              <a href="#" class="news-readmore">Devamını oku</a>
+            </div>
+          </div>
+        </article>
+
+        <div class="news-ad">
+          728x90 İçerik arası reklam alanı (AdSense)
+        </div>
+
+        <article class="news-card" data-cat="roportaj">
+          <div class="thumb">Stüdyo röportaj</div>
+          <div class="news-body">
+            <span class="news-tag-badge">RÖPORTAJ</span>
+            <h2 class="news-title">Atölye sahibi anlatıyor: “Tek operatör 3 tezgâh yönetiyor”</h2>
+            <div class="news-meta">21.11.2025</div>
+            <p class="news-excerpt">Nitelikli eleman sorununa çözüm için işletmeler eğitim programlarına başladı...</p>
+            <div class="news-footer">
+              <span>6 dk okuma</span>
+              <a href="#" class="news-readmore">Devamını oku</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- SAĞ REKLAM + POPÜLER -->
+      <aside class="sidebar">
+
+        <div class="ad-side">
+          300x600 Sağ Reklam Alanı<br>
+          (Google AdSense – Sponsorluk)
+        </div>
+
+        <div class="box">
+          <h3>En Çok Okunanlar</h3>
+          <ul class="popular-list">
+            <li><a href="#">CNC tezgâh seçimi rehberi</a></li>
+            <li><a href="#">Enerji tasarrufu için 7 ipucu</a></li>
+            <li><a href="#">KOSGEB yeni destek paketi</a></li>
+          </ul>
+        </div>
+
+      </aside>
+
+    </section>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer-big">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-col-title">Cncitem Haberyeri</div>
+      <ul class="footer-list">
+        <li>Hakkımızda</li>
+        <li>Reklam & Sponsorluk</li>
+        <li>İletişim</li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Sanayi Kuşakları</div>
+      <ul class="footer-list">
+        <li>Show Haber Sanayi</li>
+        <li>TV100 Sanayi</li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Platformlar</div>
+      <ul class="footer-list">
+        <li><a href="pazaryeri.html">Pazaryeri</a></li>
+        <li><a href="fasonyeri.html">Fasonyeri</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Yasal</div>
+      <ul class="footer-list">
+        <li>KVKK</li>
+        <li>Çerez Politikası</li>
+        <li>Kullanım Koşulları</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <div>© 2025 Cncitem Haberyeri</div>
+      <div>Reklam gelirleri için AdSense entegre edebilirsiniz.</div>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backTop">↑</button>
+
+<script>
+  // Yukarı çık
+  const back = document.getElementById("backTop");
+  window.addEventListener("scroll", () => back.style.display = window.scrollY > 200 ? "flex" : "none");
+  back.addEventListener("click", () => window.scrollTo({top:0,behavior:'smooth'}));
+
+  // Filtreleme
+  const tabs = document.querySelectorAll(".tab-pill");
+  const news = document.querySelectorAll(".news-card");
+
+  tabs.forEach(t => {
+    t.addEventListener("click", () => {
+      tabs.forEach(a => a.classList.remove("active"));
+      t.classList.add("active");
+
+      const f = t.dataset.filter;
+      news.forEach(n => {
+        n.style.display = (f === "all" || n.dataset.cat === f) ? "flex" : "none";
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

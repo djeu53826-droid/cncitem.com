@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Yardım Merkezi – Cncitem Fasonyeri</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root{
+      --bg:#f3f4f6;
+      --white:#ffffff;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --blue:#2563eb;
+      --blue-dark:#1d4ed8;
+      --navy:#020617;
+      --green:#16a34a;
+      --orange:#f97316;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;}
+    a{text-decoration:none;color:inherit;}
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+    .page{min-height:100vh;display:flex;flex-direction:column;}
+    .container{max-width:1240px;margin:0 auto;padding:0 16px;}
+
+    header{
+      background:#ffffff;border-bottom:1px solid #e5e7eb;
+      position:sticky;top:0;z-index:40;
+    }
+    .header-top{border-bottom:1px solid #e5e7eb;}
+    .header-top-inner{
+      max-width:1240px;margin:0 auto;padding:10px 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+    }
+    .header-left{display:flex;align-items:center;gap:18px;}
+    .logo-mark{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px;color:#111827;}
+    .logo-mark-icon{
+      width:30px;height:30px;border-radius:9px;background:#020617;color:#fff;
+      display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;
+    }
+    .workspace{font-size:13px;color:#6b7280;}
+    .workspace strong{display:block;color:#111827;font-size:14px;}
+    .header-right{display:flex;align-items:center;gap:14px;font-size:13px;}
+    .header-pill{
+      padding:6px 12px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;
+      display:flex;align-items:center;gap:6px;cursor:pointer;
+    }
+    .header-pill-dot{width:6px;height:6px;border-radius:999px;background:#22c55e;}
+
+    .main-tabs{border-top:1px solid #e5e7eb;}
+    .main-tabs-inner{
+      max-width:1240px;margin:0 auto;padding:0 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+    }
+    .tabs-nav{display:flex;align-items:center;gap:24px;font-size:14px;font-weight:500;}
+    .tab-link{
+      padding:11px 0;color:#6b7280;position:relative;white-space:nowrap;
+    }
+    .tab-link:hover{color:var(--blue);}
+    .tab-link.active{color:var(--blue-dark);font-weight:600;}
+    .tab-link.active::after{
+      content:"";position:absolute;left:0;right:0;bottom:-2px;
+      height:3px;border-radius:999px;background:var(--blue-dark);
+    }
+    .tabs-right-text{font-size:12px;color:#6b7280;white-space:nowrap;}
+
+    main{flex:1;padding:26px 0 40px;}
+
+    .page-header{
+      max-width:1240px;margin:0 auto 16px;padding:0 16px;
+      display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+    }
+    .page-title{font-size:22px;font-weight:700;margin-bottom:4px;}
+    .page-subtitle{font-size:13px;color:var(--muted);}
+    .page-actions{display:flex;gap:10px;flex-wrap:wrap;}
+    .btn-primary{
+      border:none;border-radius:999px;padding:9px 16px;background:#0061ff;
+      color:#fff;font-size:13px;font-weight:600;cursor:pointer;
+      box-shadow:0 14px 30px rgba(0,97,255,.45);
+    }
+
+    .help-layout{
+      max-width:1240px;margin:0 auto;padding:0 16px;
+      display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1.3fr);
+      gap:24px;align-items:flex-start;
+    }
+
+    .card{
+      background:#ffffff;border-radius:20px;padding:18px 18px 18px;
+      border:1px solid #e5e7eb;box-shadow:0 16px 30px rgba(15,23,42,.08);
+    }
+    .card-title{font-size:15px;font-weight:600;margin-bottom:8px;}
+    .card-sub{font-size:12px;color:#9ca3af;margin-bottom:10px;}
+
+    .help-search{
+      margin-bottom:12px;
+    }
+    .help-input{
+      width:100%;border-radius:999px;border:1px solid #e5e7eb;
+      padding:9px 12px;font-size:13px;outline:none;background:#f9fafb;
+    }
+    .help-input:focus{
+      border-color:#2563eb;box-shadow:0 0 0 1px rgba(37,99,235,.15);background:#fff;
+    }
+
+    .faq-list{list-style:none;font-size:13px;margin-top:4px;}
+    .faq-item{
+      padding:9px 0;border-bottom:1px solid #e5e7eb;cursor:pointer;
+    }
+    .faq-q{font-weight:500;margin-bottom:3px;}
+    .faq-a{font-size:12px;color:#6b7280;margin-top:2px;}
+
+    .help-buttons{
+      display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:12px;
+    }
+    .help-chip{
+      padding:7px 11px;border-radius:999px;border:1px solid #e5e7eb;
+      background:#f9fafb;cursor:pointer;
+    }
+
+    .contact-card{font-size:13px;color:#4b5563;}
+    .contact-row{margin-top:8px;}
+    .contact-tag{
+      display:inline-block;margin-top:4px;padding:4px 8px;border-radius:999px;
+      background:#ecfdf3;color:#166534;font-size:11px;
+    }
+
+    .bottom-strip{
+      max-width:1240px;margin:24px auto 0;padding:0 16px;
+      font-size:11px;color:#9ca3af;
+      display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+
+    @media(max-width:1024px){
+      .help-layout{grid-template-columns:1fr;}
+    }
+    @media(max-width:768px){
+      .header-top-inner{flex-direction:column;align-items:flex-start;}
+      .workspace strong{display:inline;margin-left:4px;}
+      .main-tabs-inner{flex-direction:column;align-items:flex-start;}
+      .page-header{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="header-top">
+      <div class="header-top-inner">
+        <div class="header-left">
+          <a href="index.html" class="logo-mark">
+            <div class="logo-mark-icon">C</div>
+            <span>Cncitem Fasonyeri</span>
+          </a>
+          <div class="workspace">
+            Kişisel çalışma alanı
+            <strong>Arda Arsal</strong>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="header-pill">
+            <span class="header-pill-dot"></span>
+            <span>TR • TRY</span>
+          </div>
+          <div class="header-pill">Hesap Ayarları</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-tabs">
+      <div class="main-tabs-inner">
+        <nav class="tabs-nav">
+          <a href="pano.html" class="tab-link">Pano</a>
+          <a href="projelerim.html" class="tab-link">Projelerim</a>
+          <a href="parcakutuphanesi.html" class="tab-link">Parça Kütüphanesi</a>
+          <a href="finanslarim.html" class="tab-link">Finanslarım</a>
+          <a href="yardim.html" class="tab-link active">Yardım Merkezi</a>
+          <a href="fiyat.html" class="tab-link">Fiyat Teklifi</a>
+        </nav>
+
+        <div class="tabs-right-text">
+          7/24 destek · Ortalama yanıt süresi: 15 dk
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="page-header">
+      <div>
+        <div class="page-title">Yardım Merkezi</div>
+        <div class="page-subtitle">
+          Cncitem Fasonyeri hakkında sık sorulan sorular, kullanım rehberleri ve destek kanalları.
+        </div>
+      </div>
+      <div class="page-actions">
+        <button class="btn-primary">Canlı destek başlat</button>
+      </div>
+    </div>
+
+    <div class="help-layout">
+
+      <section class="card">
+        <div class="card-title">Size nasıl yardımcı olabiliriz?</div>
+        <div class="card-sub">Önce arama yapın, ardından detaylı kategori rehberlerine göz atın.</div>
+
+        <div class="help-search">
+          <input type="text" class="help-input" placeholder="Örn: Dosya yükleme hatası, teklif süreleri, fatura bilgileri...">
+        </div>
+
+        <ul class="faq-list">
+          <li class="faq-item">
+            <div class="faq-q">Hangi dosya formatlarını sisteme yükleyebilirim?</div>
+            <div class="faq-a">
+              STEP, STP, IGES, SLDPRT, STL gibi 3D CAD formatlarının yanı sıra PDF, DXF ve DWG teknik resimler desteklenir.
+            </div>
+          </li>
+          <li class="faq-item">
+            <div class="faq-q">Teklif ne kadar sürede oluşturulur?</div>
+            <div class="faq-a">
+              Çoğu proje için teklifiniz birkaç saniye içinde otomatik olarak oluşturulur, karmaşık projelerde bu süre uzayabilir.
+            </div>
+          </li>
+          <li class="faq-item">
+            <div class="faq-q">Ödemelerimi nasıl yapabilirim?</div>
+            <div class="faq-a">
+              Kredi kartı, banka havalesi ve anlaşmalı banka sanal POS altyapısı ile güvenli ödeme yapabilirsiniz.
+            </div>
+          </li>
+        </ul>
+
+        <div class="help-buttons">
+          <div class="help-chip">Teklif oluşturma rehberi</div>
+          <div class="help-chip">Dosya yükleme ipuçları</div>
+          <div class="help-chip">Fatura ve ödeme soruları</div>
+          <div class="help-chip">Tedarikçi ağı hakkında</div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="card-title">Destek kanalları</div>
+        <div class="card-sub">İhtiyacınıza göre bize ulaşabileceğiniz yollar.</div>
+
+        <div class="contact-card">
+          <div class="contact-row">
+            <strong>E-posta desteği</strong>
+            <p>support@cncitem.shop</p>
+            <span class="contact-tag">Genellikle aynı iş günü yanıt</span>
+          </div>
+
+          <div class="contact-row" style="margin-top:12px;">
+            <strong>Canlı sohbet</strong>
+            <p>Hafta içi 09:00 – 18:00 (TR)</p>
+            <span class="contact-tag">Teklif ve üretim soruları</span>
+          </div>
+
+          <div class="contact-row" style="margin-top:12px;">
+            <strong>Bilgi tabanı</strong>
+            <p>Platformun tüm özellikleri için adım adım kullanım rehberleri.</p>
+          </div>
+
+          <p style="margin-top:12px;font-size:11px;color:#9ca3af;">
+            Projelerinizle ilgili kritik bir sorun yaşıyorsanız, canlı destek üzerinden
+            “Acil üretim desteği” seçeneğini işaretleyebilirsiniz.
+          </p>
+        </div>
+      </aside>
+
+    </div>
+
+    <div class="bottom-strip">
+      <span>Yardım merkezi sürekli güncellenir; yeni özellikler için burayı takip edin.</span>
+      <span>Tekliflerle ilgili sorular için: önce <strong>Fiyat Teklifi</strong> sekmesindeki formu doldurun.</span>
+    </div>
+
+  </main>
+</div>
+</body>
+</html>

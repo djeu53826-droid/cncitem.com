@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Fasonyeri – Talebe Özel Üretim Platformu | Cncitem</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root{
+      --bg:#f3f4f6;
+      --white:#ffffff;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --blue:#2563eb;
+      --blue-soft:#dbeafe;
+      --blue-dark:#1d4ed8;
+      --navy:#020617;
+      --green:#16a34a;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    }
+    a{text-decoration:none;color:inherit;}
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      padding-top:100px; /* fixed header boşluğu */
+    }
+
+    .container{
+      max-width:1240px;
+      margin:0 auto;
+      padding:0 16px;
+    }
+
+    /* ---------- SABİT ÜST ALAN ---------- */
+
+    .top-shell{
+      position:fixed;
+      inset:0 0 auto 0;
+      z-index:50;
+      background:#ffffff;
+      box-shadow:0 10px 30px rgba(15,23,42,.08);
+    }
+    .top-bar{
+      background:var(--navy);
+      color:#e5e7eb;
+      font-size:12px;
+    }
+    .top-bar-inner{
+      max-width:1240px;
+      margin:0 auto;
+      padding:6px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    header{background:#ffffff;}
+    .nav{
+      max-width:1240px;
+      margin:0 auto;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+    }
+    .logo img{
+      height:60px;
+      width:auto;
+      display:block;
+    }
+
+    .main-nav{
+      flex:1;
+      display:flex;
+      justify-content:center;
+    }
+    .main-nav ul{
+      list-style:none;
+      display:flex;
+      gap:32px;
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:.16em;
+    }
+    .main-nav a{color:#111827;}
+    .main-nav a:hover{color:var(--blue);}
+    .main-nav a.active{color:var(--blue-dark);}
+
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .nav-card{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#f9fafb;
+      border-radius:12px;
+      border:1px solid #e5e7eb;
+      padding:8px 14px;
+      box-shadow:0 4px 14px rgba(15,23,42,.15);
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      color:#111827;
+      white-space:nowrap;
+    }
+    .nav-icon{
+      width:32px;height:32px;
+      border-radius:10px;
+      background:#eef2ff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .nav-icon svg{
+      width:20px;
+      height:20px;
+      stroke:#4b5563;
+      stroke-width:1.8;
+      fill:none;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .lang-trigger{
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      padding:6px 10px;
+      font-size:12px;
+      background:#ffffff;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+    }
+    .lang-dot{
+      width:6px;height:6px;border-radius:999px;background:#22c55e;
+    }
+
+    /* ---------- HERO (SOL METİN + SAĞ 4 ADIM) ---------- */
+
+    .hero{
+      margin-top:30px;
+      margin-bottom:28px;
+    }
+    .hero-shell{
+      background:#ffffff;
+      border-radius:32px;
+      box-shadow:0 24px 60px rgba(15,23,42,.12);
+      padding:30px 32px 34px;
+    }
+    .hero-inner{
+      display:grid;
+      grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr);
+      gap:32px;
+      align-items:stretch;
+    }
+
+    .hero-title{
+      font-size:36px;
+      line-height:1.2;
+      font-weight:800;
+      margin-bottom:12px;
+    }
+    .hero-title span.blue{color:var(--blue-dark);}
+    .hero-title span.green{color:var(--green);}
+    .hero-text{
+      font-size:15px;
+      color:var(--muted);
+      max-width:520px;
+      margin-bottom:18px;
+    }
+
+    .hero-badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-bottom:18px;
+    }
+    .hero-badge{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#eff6ff;
+      font-size:13px;
+    }
+    .hero-badge-icon{
+      width:26px;height:26px;
+      border-radius:999px;
+      background:#1d4ed8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#ffffff;
+      font-size:14px;
+    }
+
+    /* Xometry tarzı CTA satırı */
+    .hero-cta{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-top:6px;
+      margin-bottom:4px;
+    }
+    .hero-quote-btn{
+      border:none;
+      border-radius:999px;
+      padding:14px 34px;
+      background:#0061ff;
+      color:#ffffff;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 18px 40px rgba(0,97,255,.45);
+      font-size:15px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      white-space:nowrap;
+    }
+    .hero-cta-dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:#111827;
+      box-shadow:0 0 0 4px rgba(15,23,42,.06);
+    }
+    .hero-cta-label{
+      font-size:14px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:#111827;
+    }
+    .hero-cta-safe{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      margin-top:2px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .hero-cta-safe .lock{
+      font-size:14px;
+    }
+
+    /* sağ taraf – 4 adım kartı */
+    .process-card{
+      background:linear-gradient(135deg,#e7f0ff,#e6f9f0);
+      border-radius:24px;
+      padding:22px 22px 24px;
+      box-shadow:0 10px 26px rgba(15,23,42,.12);
+    }
+    .process-title{
+      text-align:center;
+      font-size:20px;
+      margin-bottom:4px;
+      color:#0f172a;
+    }
+    .process-sub{
+      text-align:center;
+      font-size:13px;
+      color:#6b7280;
+      margin-bottom:18px;
+    }
+    .process-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px 22px;
+      text-align:center;
+    }
+    .process-step-icon-wrap{
+      width:0px;              /* DÜZELTİLDİ */
+      height:64px;
+      border-radius:999px;
+      margin:0 auto 6px;
+      background:radial-gradient(circle at 30% 0,#60a5fa,#2563eb);
+      box-shadow:0 16px 32px rgba(37,99,235,.55);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .process-step-icon{
+      width:9999px;              /* DÜZELTİLDİ */
+      height:34px;
+      object-fit:contain;
+      display:block;
+    }
+    .process-step-title{
+      font-weight:600;
+      margin-bottom:3px;
+      font-size:13px;
+    }
+    .process-step-text{
+      font-size:12px;
+      color:#4b5563;
+    }
+
+    /* ---------- MÜŞTERİ HİKAYELERİ ---------- */
+
+    .testimonials{margin-bottom:26px;}
+    .hero-testimonials{
+      background:linear-gradient(135deg,#e7f0ff,#e6f9f0);
+      border-radius:24px;
+      padding:20px 22px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+    .hero-testimonials h3{
+      text-align:center;
+      font-size:20px;
+      margin-bottom:4px;
+    }
+    .hero-testimonials-cards{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+    }
+    .t-card{
+      background:#ffffff;
+      border-radius:16px;
+      padding:12px 14px 14px;
+      box-shadow:0 4px 12px rgba(15,23,42,.08);
+      font-size:13px;
+      color:#374151;
+    }
+    .t-logo{
+      width:60px;
+      height:60px;
+      margin:0 auto 6px;
+      display:block;
+      object-fit:contain;
+    }
+    .t-name{text-align:center;font-weight:600;margin-bottom:2px;}
+    .t-person{text-align:center;font-size:12px;color:#6b7280;margin-bottom:6px;}
+    .t-text{text-align:center;font-size:12px;color:#4b5563;}
+
+    /* ---------- FASON ÜRETİM HİZMETLERİ ŞERİDİ ---------- */
+
+    .services{margin-bottom:26px;}
+    .services-strip{
+      background:linear-gradient(to bottom,#eff6ff,#ffffff);
+      padding:22px 20px 16px;
+      border-radius:24px;
+      border:1px solid #dbeafe;
+    }
+    .services-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:14px;
+      font-size:13px;
+      color:#1e293b;
+    }
+    .services-row{
+      display:grid;
+      grid-template-columns:40px repeat(6,minmax(0,1fr)) 40px;
+      gap:10px;
+      align-items:stretch;
+    }
+    .arrow-btn{
+      width:40px;height:110px;
+      border-radius:999px;
+      border:none;
+      background:#1d4ed8;
+      color:#ffffff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 8px 22px rgba(37,99,235,.45);
+      font-size:18px;
+    }
+    .service-card{
+      background:#ffffff;
+      border-radius:18px;
+      border:1px solid #dbeafe;
+      padding:12px 10px 14px;
+      text-align:center;
+      box-shadow:0 8px 20px rgba(15,23,42,.06);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:110px;
+    }
+    .service-img{
+      height:52px;
+      margin-bottom:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .service-img img{
+      max-height:52px;
+      max-width:100%;
+      object-fit:contain;
+      display:block;
+    }
+    .service-name{font-size:13px;font-weight:600;color:#111827;}
+    .service-link{margin-top:6px;font-size:11px;color:var(--blue-dark);}
+
+    /* ---------- ALT BİLGİ KUTULARI ---------- */
+
+    .info-section{margin-top:10px;margin-bottom:32px;}
+    .info-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.1fr) minmax(0,1.1fr);
+      gap:24px;
+      align-items:flex-start;
+    }
+    .info-box{
+      background:#ffffff;
+      border-radius:20px;
+      padding:18px 18px 20px;
+      box-shadow:0 10px 24px rgba(15,23,42,.08);
+      font-size:14px;
+      color:var(--muted);
+    }
+    .info-box h3{
+      font-size:18px;
+      margin-bottom:8px;
+      color:#111827;
+    }
+    .info-list{margin-top:8px;padding-left:18px;font-size:13px;}
+    .info-list li+li{margin-top:4px;}
+
+    /* ---------- FOOTER ---------- */
+
+    footer{
+      margin-top:10px;
+      background:#f9fafb;
+      border-top:1px solid #e5e7eb;
+      font-size:13px;
+      color:var(--text);
+    }
+    .footer-main{
+      max-width:1240px;
+      margin:0 auto;
+      padding:26px 16px 22px;
+      display:grid;
+      grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr)
+                           minmax(0,1.1fr) minmax(0,1.1fr) minmax(0,1.1fr);
+      gap:32px;
+    }
+    .footer-title{font-weight:700;margin-bottom:8px;}
+    .footer-list{list-style:none;}
+    .footer-list li+li{margin-top:4px;}
+    .footer-list a{color:var(--text);}
+    .footer-list a:hover{color:var(--blue);}
+
+    .footer-social{display:flex;gap:10px;margin-top:8px;}
+    .footer-social-btn{
+      width:32px;height:32px;border-radius:999px;
+      background:#020617;
+      border:1px solid #1f2937;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:15px;
+      cursor:pointer;
+      color:#f9fafb;
+    }
+
+    .cert-buttons{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
+    .cert-btn{
+      padding:8px 16px;
+      border-radius:999px;
+      border:1px dashed #9ca3af;
+      background:transparent;
+      color:var(--text);
+      font-size:12px;
+      text-align:center;
+      cursor:pointer;
+    }
+
+    .footer-legal{background:#020617;color:#e5e7eb;}
+    .footer-legal-inner{
+      max-width:1240px;
+      margin:0 auto;
+      padding:8px 16px 10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      font-size:11px;
+    }
+    .footer-legal-links{display:flex;flex-wrap:wrap;gap:14px;}
+    .footer-legal-links a{color:#9ca3af;}
+    .footer-legal-links a:hover{color:#e5e7eb;}
+
+    /* ---------- RESPONSIVE ---------- */
+
+    @media(max-width:1024px){
+      body{padding-top:160px;}
+      .hero-inner{grid-template-columns:1fr;}
+      .hero-shell{padding:24px 20px 28px;}
+      .process-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+      .hero-testimonials-cards{grid-template-columns:repeat(2,minmax(0,1fr));}
+      .services-row{grid-template-columns:40px repeat(4,minmax(0,1fr)) 40px;}
+      .info-grid{grid-template-columns:1fr;}
+      .footer-main{grid-template-columns:repeat(3,minmax(0,1fr));}
+    }
+    @media(max-width:768px){
+      body{padding-top:180px;}
+      .nav{flex-direction:column;align-items:flex-start;gap:10px;}
+      .main-nav{justify-content:flex-start;}
+      .hero-title{font-size:30px;}
+      .hero-badges{flex-direction:column;align-items:flex-start;}
+      .process-grid{grid-template-columns:1fr;}
+      .hero-testimonials-cards{grid-template-columns:1fr;}
+      .services-row{grid-template-columns:40px repeat(2,minmax(0,1fr)) 40px;}
+      .footer-main{grid-template-columns:repeat(2,minmax(0,1fr));}
+      .footer-legal-inner{flex-direction:column;align-items:flex-start;}
+    }
+    @media(max-width:640px){
+      .hero-shell{border-radius:0;}
+      .services-row{grid-template-columns:40px minmax(0,1fr) 40px;}
+      .footer-main{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ÜST BAR + HEADER -->
+  <div class="top-shell">
+    <div class="top-bar">
+      <div class="top-bar-inner">
+        <span>Dijitalleşen sanayinin pazaryerinde fason üretim taleplerinizi yönetin.</span>
+        <span>Ücretsiz teklif • Hızlı tedarik</span>
+      </div>
+    </div>
+
+    <header>
+      <nav class="nav">
+        <a href="index.html" class="logo">
+          <img src="images/cnclogo.png" alt="Cncitem">
+        </a>
+
+        <div class="main-nav">
+          <ul>
+            <li><a href="pazaryeri.html">PAZARYERİ</a></li>
+            <li><a href="fasonyeri.html" class="active">FASONYERİ</a></li>
+            <li><a href="haberyeri.html">HABERYERİ</a></li>
+            <li><a href="#">KAMPANYALAR</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <a href="hesabim.html" class="nav-card">
+            <div class="nav-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/>
+                <path d="M5 20c0-3.04 3.13-5 7-5s7 1.96 7 5"/>
+              </svg>
+            </div>
+            <span>Hesabım</span>
+          </a>
+
+          <button class="lang-trigger">
+            <span class="lang-dot"></span>
+            <span>TR • TRY</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-shell">
+        <div class="hero-inner">
+          <!-- Sol -->
+          <div>
+            <h1 class="hero-title">
+              Talebe Özel <span class="blue">Üretim Platformu</span><br>
+              Fason işlerinizi <span class="green">tek panelden</span> yönetin.
+            </h1>
+            <p class="hero-text">
+              Prototiplemeden seri üretime, Türkiye ve Avrupa’da onlarca tedarikçi atölye ile
+              CNC işleme, sac işleme, 3D baskı ve kalıplama süreçlerinizi Cncitem Fasonyeri
+              üzerinden kolayca yönetin.
+            </p>
+
+            <div class="hero-badges">
+              <div class="hero-badge">
+                <div class="hero-badge-icon">✔</div>
+                <span>3 iş gününde ekspres üretim</span>
+              </div>
+              <div class="hero-badge">
+                <div class="hero-badge-icon">✔</div>
+                <span>ISO 9001:2015 sertifikalı atölyeler</span>
+              </div>
+              <div class="hero-badge">
+                <div class="hero-badge-icon">✔</div>
+                <span>15+ üretim prosesi, 100+ malzeme</span>
+              </div>
+            </div>
+
+            <!-- Xometry stil CTA -->
+            <div class="hero-cta">
+              <a href="fiyat.html" class="hero-quote-btn">Online Teklif Oluştur</a>
+            </div>
+            <div class="hero-cta-safe">
+              <span class="lock">🔒</span>
+              <span>Yüklediğiniz tüm modeller gizlilik sözleşmesi ile korunur.</span>
+            </div>
+          </div>
+
+          <!-- Sağ – 4 Adım -->
+          <div class="process-card">
+            <h2 class="process-title">Fason üretim süreciniz 4 adımda tamamlansın</h2>
+            <p class="process-sub">Fasonyeri üzerinde tekliften teslimata kadar tüm adımlar tek panelden yönetilir.</p>
+
+            <div class="process-grid">
+              <div>
+                <div class="process-step-icon-wrap">
+                  <img src="images/model.png" alt="Model Yükle" class="process-step-icon">
+                </div>
+                <div class="process-step-title">Model Yükle</div>
+                <div class="process-step-text">
+                  3D model veya teknik çizim dosyanızı sisteme yükleyin.
+                </div>
+              </div>
+
+              <div>
+                <div class="process-step-icon-wrap">
+                  <img src="images/teklif.png" alt="Teklif Al" class="process-step-icon">
+                </div>
+                <div class="process-step-title">Teklif Al</div>
+                <div class="process-step-text">
+                  Yapay zekâ destekli fiyatlandırma ile anında teklif görün.
+                </div>
+              </div>
+
+              <div>
+                <div class="process-step-icon-wrap">
+                  <img src="images/ozellestir.png" alt="Siparişi Özelleştir" class="process-step-icon">
+                </div>
+                <div class="process-step-title">Siparişi Özelleştir</div>
+                <div class="process-step-text">
+                  Malzeme, tolerans, kaplama ve adetleri tek ekrandan belirleyin.
+                </div>
+              </div>
+
+              <div>
+                <div class="process-step-icon-wrap">
+                  <img src="images/kargo.png" alt="Parçalar Kapınızda" class="process-step-icon">
+                </div>
+                <div class="process-step-title">Parçalar Kapınızda</div>
+                <div class="process-step-text">
+                  Üretilen parçalar anlaşmalı kargo ile adresinize kadar gelsin.
+                </div>
+              </div>
+            </div>
+          </div><!-- /process-card -->
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HİZMETLER ŞERİDİ -->
+  <section class="services">
+    <div class="container">
+      <div class="services-strip">
+        <div class="services-header">
+          <span>Fason üretim hizmetleri</span>
+          <span style="font-size:12px;color:var(--muted);">Tüm süreçler tek panelden yönetilir.</span>
+        </div>
+
+        <div class="services-row">
+          <button class="arrow-btn">&#8249;</button>
+
+          <div class="service-card">
+            <div class="service-img">
+              <img src="images/silikon.png" alt="Silikon Kalıplama">
+            </div>
+            <div class="service-name">Silikon Kalıplama</div>
+            <div class="service-link"></div>
+          </div>
+
+          <div class="service-card">
+            <div class="service-img">
+              <img src="images/basinc.png" alt="Basınçlı Döküm">
+            </div>
+            <div class="service-name">Basınçlı Döküm</div>
+            <div class="service-link"></div>
+          </div>
+
+          <div class="service-card">
+            <div class="service-img">
+              <img src="images/seriuretim.png" alt="Seri Üretim">
+            </div>
+            <div class="service-name">Seri Üretim</div>
+            <div class="service-link"></div>
+          </div>
+
+          <div class="service-card">
+            <div class="service-img">
+              <img src="images/sac.png" alt="CNC İşleme">
+            </div>
+            <div class="service-name">CNC İşleme</div>
+            <div class="service-link"></div>
+          </div>
+
+          <div class="service-card">
+            <div class="service-img">
+              <img src="images/3d.png" alt="Endüstriyel 3D Baskı">
+            </div>
+            <div class="service-name">Endüstriyel 3D Baskı</div>
+            <div class="service-link"></div>
+          </div>
+
+          <div class="service-card">
+            <div class="service-img">
+              <img src="images/fcnc.png" alt="Sac Metal">
+            </div>
+            <div class="service-name">Sac Metal</div>
+            <div class="service-link"></div>
+          </div>
+
+          <button class="arrow-btn">&#8250;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALT BİLGİ -->
+  <section class="info-section">
+    <div class="container">
+      <div class="info-grid">
+        <div class="info-box">
+          <h3>Neden Cncitem Fasonyeri?</h3>
+          <p>
+            Tek tek atölye aramak, fiyat toplamak ve kalite kontrolle uğraşmak yerine;
+            Cncitem’de onaylı üreticilerle çalışır, tüm süreci tek panelden izlersiniz.
+          </p>
+          <ul class="info-list">
+            <li>Onaylı ve puanlanan tedarikçi ağı</li>
+            <li>Parça başı maliyet ve termin kontrolü</li>
+            <li>Parola korumalı proje paylaşımı</li>
+            <li>Tek fatura, çoklu atölye yönetimi</li>
+          </ul>
+        </div>
+
+        <div class="info-box">
+          <h3>Hangi dosya türlerini yükleyebilirim?</h3>
+          <p>
+            Çoğu CAD ve mesh formatı desteklenir. Yüklediğiniz tüm dosyalar
+            sadece sizin ve tedarikçinizin erişebileceği şekilde şifrelenir.
+          </p>
+          <ul class="info-list">
+            <li>3D: STEP, STP, IGES, SLDPRT, STL vb.</li>
+            <li>2D: PDF, DXF, DWG teknik resimler</li>
+            <li>Ek dokümanlar: proses notları, kalite gereksinimleri</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+ <!-- MÜŞTERİ HİKAYELERİ -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="hero-testimonials">
+        <h3> Müşteri Hikayeleri</h3>
+        <div class="hero-testimonials-cards">
+          <div class="t-card">
+            <img src="images/musteri/bmw.png" alt="BMW" class="t-logo">
+            <div class="t-name">BMW</div>
+            <div class="t-person">Ryan Lambert</div>
+            <div class="t-text">
+              Cncitem profesyonellik ve kolaylık sunuyor. Biz teklifi alıyoruz,
+              gerisini onlar hallediyor.”
+            </div>
+          </div>
+
+          <div class="t-card">
+            <img src="images/musteri/axtra.png" alt="Axtra3D" class="t-logo">
+            <div class="t-name">Axtra3D</div>
+            <div class="t-person">Gianni Zitelli</div>
+            <div class="t-text">
+              Cncitem ile çalışmak bize dünya çapında binlerce üreticiye erişim sağladı.”
+            </div>
+          </div>
+
+          <div class="t-card">
+            <img src="images/musteri/sono.png" alt="Sono Motors" class="t-logo">
+            <div class="t-name">Sono Motors</div>
+            <div class="t-person">Christian Hornschuch</div>
+            <div class="t-text">
+              “Yüksek doğruluk ve kaliteyle parçaların rekor sürede teslim edilmesini sağlıyor.”
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-main">
+      <div>
+        <div class="footer-title">Cncitem</div>
+        <ul class="footer-list">
+          <li><a href="#">Hakkımızda</a></li>
+          <li><a href="#">İletişim</a></li>
+          <li><a href="#">Mağaza Aç</a></li>
+          <li><a href="#">Cncitem'de Güvenlik</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-title">Kategoriler</div>
+        <ul class="footer-list">
+          <li><a href="#">Elektrik &amp; Elektronik</a></li>
+          <li><a href="#">Mekanik</a></li>
+          <li><a href="#">Endüstriyel Otomasyon</a></li>
+          <li><a href="#">Rulman</a></li>
+          <li><a href="#">Test &amp; Ölçüm Aletleri</a></li>
+          <li><a href="#">Hırdavat &amp; El Aletleri</a></li>
+          <li><a href="#">Makine Aksesuarları</a></li>
+          <li><a href="#">Takım Tutucular</a></li>
+          <li><a href="#">Kesici Takımlar</a></li>
+          <li><a href="#">Sarf Malzemeleri</a></li>
+          <li><a href="#">Madeni Yağlar &amp; Sıvılar</a></li>
+          <li><a href="#">Kalıp Elemanları</a></li>
+          <li><a href="#">Universal</a></li>
+          <li><a href="#">Servis / Tamir / Bakım</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-title">Destek</div>
+        <ul class="footer-list">
+          <li><a href="#">Sıkça Sorulan Sorular</a></li>
+          <li><a href="#">Canlı Destek</a></li>
+          <li><a href="#">İade &amp; Değişim</a></li>
+          <li><a href="#">Mesafeli Satış Sözleşmesi</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-title">Sosyal Medya</div>
+        <div class="footer-social">
+          <button class="footer-social-btn">f</button>
+          <button class="footer-social-btn">▶</button>
+          <button class="footer-social-btn">in</button>
+          <button class="footer-social-btn">X</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-title">Güvenlik Sertifikaları</div>
+        <div class="cert-buttons">
+          <button class="cert-btn">ETBİS LOGO</button>
+          <button class="cert-btn">TRGO LOGO</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      <div class="footer-legal-inner">
+        <div>© 2025 Cncitem.shop • CNC Parça, Fason &amp; Pazaryeri Platformu.</div>
+        <div class="footer-legal-links">
+          <a href="#">Çerez Tercihleri</a>
+          <a href="#">Kişisel Verilerin Korunması</a>
+          <a href="#">Kullanım Koşulları</a>
+          <a href="#">Mesafeli Satış</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

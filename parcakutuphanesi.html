@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Parça Kütüphanesi – Cncitem Fasonyeri</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root{
+      --bg:#f3f4f6;
+      --white:#ffffff;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --blue:#2563eb;
+      --blue-dark:#1d4ed8;
+      --navy:#020617;
+      --green:#16a34a;
+      --orange:#f97316;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;}
+    a{text-decoration:none;color:inherit;}
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+    .page{min-height:100vh;display:flex;flex-direction:column;}
+    .container{max-width:1240px;margin:0 auto;padding:0 16px;}
+
+    header{
+      background:#ffffff;border-bottom:1px solid #e5e7eb;
+      position:sticky;top:0;z-index:40;
+    }
+    .header-top{border-bottom:1px solid #e5e7eb;}
+    .header-top-inner{
+      max-width:1240px;margin:0 auto;padding:10px 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+    }
+    .header-left{display:flex;align-items:center;gap:18px;}
+    .logo-mark{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px;color:#111827;}
+    .logo-mark-icon{
+      width:30px;height:30px;border-radius:9px;background:#020617;color:#fff;
+      display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;
+    }
+    .workspace{font-size:13px;color:#6b7280;}
+    .workspace strong{display:block;color:#111827;font-size:14px;}
+    .header-right{display:flex;align-items:center;gap:14px;font-size:13px;}
+    .header-pill{
+      padding:6px 12px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;
+      display:flex;align-items:center;gap:6px;cursor:pointer;
+    }
+    .header-pill-dot{width:6px;height:6px;border-radius:999px;background:#22c55e;}
+
+    .main-tabs{border-top:1px solid #e5e7eb;}
+    .main-tabs-inner{
+      max-width:1240px;margin:0 auto;padding:0 16px;
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+    }
+    .tabs-nav{display:flex;align-items:center;gap:24px;font-size:14px;font-weight:500;}
+    .tab-link{
+      padding:11px 0;color:#6b7280;position:relative;white-space:nowrap;
+    }
+    .tab-link:hover{color:var(--blue);}
+    .tab-link.active{color:var(--blue-dark);font-weight:600;}
+    .tab-link.active::after{
+      content:"";position:absolute;left:0;right:0;bottom:-2px;
+      height:3px;border-radius:999px;background:var(--blue-dark);
+    }
+    .tabs-right-text{font-size:12px;color:#6b7280;white-space:nowrap;}
+
+    main{flex:1;padding:26px 0 40px;}
+
+    .page-header{
+      max-width:1240px;margin:0 auto 16px;padding:0 16px;
+      display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+    }
+    .page-title{font-size:22px;font-weight:700;margin-bottom:4px;}
+    .page-subtitle{font-size:13px;color:var(--muted);}
+    .page-actions{display:flex;gap:10px;flex-wrap:wrap;}
+    .btn-primary{
+      border:none;border-radius:999px;padding:9px 16px;background:#0061ff;
+      color:#fff;font-size:13px;font-weight:600;cursor:pointer;
+      box-shadow:0 14px 30px rgba(0,97,255,.45);
+    }
+    .btn-secondary{
+      border:1px solid #e5e7eb;border-radius:999px;padding:9px 14px;
+      background:#fff;font-size:13px;color:#374151;cursor:pointer;
+    }
+
+    .library-card{
+      max-width:1240px;margin:0 auto;padding:0 16px;
+      background:#ffffff;border-radius:20px;
+      border:1px solid #e5e7eb;box-shadow:0 16px 30px rgba(15,23,42,.08);
+      padding:18px 18px 18px;
+    }
+    .lib-header{
+      display:flex;justify-content:space-between;align-items:center;gap:10px;
+      margin-bottom:12px;
+    }
+    .lib-title{font-size:15px;font-weight:600;}
+    .lib-sub{font-size:12px;color:#9ca3af;margin-bottom:4px;}
+
+    .lib-toolbar{
+      display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;font-size:12px;
+    }
+    .search-input{
+      min-width:220px;flex:1;
+      border-radius:999px;border:1px solid #e5e7eb;
+      padding:7px 10px;font-size:12px;outline:none;
+      background:#f9fafb;
+    }
+    .search-input:focus{
+      border-color:#2563eb;box-shadow:0 0 0 1px rgba(37,99,235,.15);background:#fff;
+    }
+    .filter-chip{
+      padding:6px 10px;border-radius:999px;border:1px solid #e5e7eb;
+      background:#f9fafb;cursor:pointer;
+    }
+    .filter-chip.active{
+      background:#eff6ff;border-color:#2563eb;color:#1d4ed8;font-weight:500;
+    }
+
+    .table-wrap{width:100%;overflow-x:auto;border-radius:14px;border:1px solid #e5e7eb;}
+    table{width:100%;border-collapse:collapse;font-size:12px;}
+    thead{background:#f9fafb;}
+    th,td{padding:9px 10px;border-bottom:1px solid #e5e7eb;text-align:left;white-space:nowrap;}
+    th{font-weight:600;color:#4b5563;font-size:11px;}
+    tbody tr:hover{background:#f9fafb;}
+    .tag-pill{
+      display:inline-block;margin-right:4px;margin-top:2px;
+      padding:2px 7px;border-radius:999px;background:#f3f4f6;color:#4b5563;
+      font-size:11px;
+    }
+    .link-btn{
+      border:none;background:none;color:#2563eb;font-size:12px;
+      cursor:pointer;padding:0;
+    }
+
+    .bottom-strip{
+      max-width:1240px;margin:24px auto 0;padding:0 16px;
+      font-size:11px;color:#9ca3af;
+      display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+
+    @media(max-width:768px){
+      .header-top-inner{flex-direction:column;align-items:flex-start;}
+      .workspace strong{display:inline;margin-left:4px;}
+      .main-tabs-inner{flex-direction:column;align-items:flex-start;}
+      .page-header{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="header-top">
+      <div class="header-top-inner">
+        <div class="header-left">
+          <a href="index.html" class="logo-mark">
+            <div class="logo-mark-icon">C</div>
+            <span>Cncitem Fasonyeri</span>
+          </a>
+          <div class="workspace">
+            Kişisel çalışma alanı
+            <strong>Arda Arsal</strong>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="header-pill">
+            <span class="header-pill-dot"></span>
+            <span>TR • TRY</span>
+          </div>
+          <div class="header-pill">Hesap Ayarları</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-tabs">
+      <div class="main-tabs-inner">
+        <nav class="tabs-nav">
+          <a href="pano.html" class="tab-link">Pano</a>
+          <a href="projelerim.html" class="tab-link">Projelerim</a>
+          <a href="parcakutuphanesi.html" class="tab-link active">Parça Kütüphanesi</a>
+          <a href="finanslarim.html" class="tab-link">Finanslarım</a>
+          <a href="yardim.html" class="tab-link">Yardım Merkezi</a>
+          <a href="fiyat.html" class="tab-link">Fiyat Teklifi</a>
+        </nav>
+
+        <div class="tabs-right-text">
+          Kayıtlı parçalarınız · tekrar sipariş için hazır
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="page-header">
+      <div>
+        <div class="page-title">Parça Kütüphanesi</div>
+        <div class="page-subtitle">
+          Daha önce fiyatlandırdığınız ve ürettiğiniz parçaları tekrar kullanın, tek tıkla yeniden teklif alın.
+        </div>
+      </div>
+      <div class="page-actions">
+        <button class="btn-secondary" onclick="location.href='fiyat.html'">Yeni parça ekle</button>
+      </div>
+    </div>
+
+    <section class="library-card">
+      <div class="lib-header">
+        <div>
+          <div class="lib-title">Parça listesi</div>
+          <div class="lib-sub">Kayıtlı CAD dosyalarınız, malzeme ve üretim bilgileri.</div>
+        </div>
+      </div>
+
+      <div class="lib-toolbar">
+        <input type="text" class="search-input" placeholder="Parça adı, proje kodu veya dosya adına göre arayın">
+        <button class="filter-chip active">Tümü</button>
+        <button class="filter-chip">CNC</button>
+        <button class="filter-chip">Sac metal</button>
+        <button class="filter-chip">3D baskı</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Parça adı</th>
+              <th>Dosya</th>
+              <th>Üretim tipi</th>
+              <th>Malzeme</th>
+              <th>Son adet</th>
+              <th>Son işlem</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Alüminyum gövde üst kapak</td>
+              <td>gövde_kapak.step</td>
+              <td>CNC İşleme</td>
+              <td>
+                Alüminyum 6082
+                <div><span class="tag-pill">Anodize</span></div>
+              </td>
+              <td>80</td>
+              <td>Üretimde</td>
+              <td><button class="link-btn" onclick="location.href='fiyat.html'">Tekrar fiyatlandır</button></td>
+            </tr>
+            <tr>
+              <td>Montaj braket parçası</td>
+              <td>braket_v2.igs</td>
+              <td>Sac Metal</td>
+              <td>
+                DKP sac
+                <div><span class="tag-pill">Lazer kesim</span></div>
+              </td>
+              <td>120</td>
+              <td>Teslim edildi</td>
+              <td><button class="link-btn" onclick="location.href='fiyat.html'">Tekrar fiyatlandır</button></td>
+            </tr>
+            <tr>
+              <td>Plastik koruma kapağı</td>
+              <td>kapak_proto.stl</td>
+              <td>Endüstriyel 3D Baskı</td>
+              <td>
+                PA12
+                <div><span class="tag-pill">Prototip</span></div>
+              </td>
+              <td>10</td>
+              <td>Teklif alındı</td>
+              <td><button class="link-btn" onclick="location.href='fiyat.html'">Tekrar fiyatlandır</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="bottom-strip">
+      <span>Kütüphaneye eklenen her parça, tekrar siparişlerde zaman kazanmanızı sağlar.</span>
+      <span>Yeni parçalar <strong>Fiyat Teklifi</strong> üzerinden otomatik olarak kütüphaneye eklenebilir.</span>
+    </div>
+
+  </main>
+</div>
+</body>
+</html>
