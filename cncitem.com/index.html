@@ -1,0 +1,1432 @@
+<!DOCTYPE html> 
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Cncitem – CNC Parça, Fason ve Pazaryeri Platformu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEKME İKONU -->
+  <link rel="icon" type="image/png" href="images/cncitem-icon.png">
+
+  <style>
+    :root{
+      --bg:#f3f4f6;
+      --white:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --blue:#2563eb;
+      --blue-dark:#1d4ed8;
+      --orange:#2563eb;
+      --green:#16a34a;
+      --navy:#020617;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;}
+    a{text-decoration:none;color:inherit;}
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      padding-top:80px; /* sabit header boşluğu */
+    }
+
+    .container{max-width:1240px;margin:0 auto;padding:0 16px;}
+
+    /* ───── ÜST SABİT ALAN ───── */
+
+    .top-shell{
+      position:fixed;
+      inset:0 0 auto 0;
+      z-index:50;
+      background:#ffffff;
+      box-shadow:0 10px 30px rgba(15,23,42,.08);
+    }
+
+    .top-bar{
+      background:var(--navy);
+      color:#e5e7eb;
+      font-size:12px;
+    }
+    .top-bar-inner{
+      max-width:1240px;
+      margin:0 auto;
+      padding:6px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    header{
+      background:#ffffff;
+    }
+    .nav{
+      max-width:1240px;
+      margin:0 auto;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+
+    /* logo */
+    .logo{
+      display:flex;
+      align-items:center;
+    }
+    .logo img{
+      height:60px;
+      width:auto;
+      display:block;
+    }
+
+    .main-nav{
+      flex:1;
+      display:flex;
+      justify-content:center;
+    }
+    .main-nav ul{
+      list-style:none;
+      display:flex;
+      gap:32px;
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:.16em;
+    }
+    .main-nav a{color:#111827;}
+    .main-nav a:hover{color:var(--blue);}
+
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .nav-card{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#f9fafb;
+      border-radius:12px;
+      border:1px solid #e5e7eb;
+      padding:8px 14px;
+      box-shadow:0 4px 14px rgba(15,23,42,.15);
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      color:#111827;
+      white-space:nowrap;
+    }
+    .nav-icon{
+      width:32px;height:32px;
+      border-radius:10px;
+      background:#eef2ff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .nav-icon svg{
+      width:20px;
+      height:20px;
+      stroke:#4b5563;
+      stroke-width:1.8;
+      fill:none;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .lang-trigger{
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      padding:6px 10px;
+      font-size:12px;
+      background:#ffffff;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+    }
+    .lang-dot{
+      width:6px;height:6px;border-radius:999px;background:#22c55e;
+    }
+
+    /* ───── DİL / PARA BİRİMİ MODAL ───── */
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.45);
+      display:none;
+      align-items:flex-start;
+      justify-content:center;
+      padding-top:90px;
+      z-index:60;
+    }
+    .overlay.open{display:flex;}
+    .overlay-panel{
+      background:#ffffff;
+      border-radius:20px;
+      max-width:1000px;
+      width:100%;
+      padding:20px 22px 22px;
+      box-shadow:0 20px 50px rgba(15,23,42,.45);
+    }
+    .overlay-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:12px;
+      font-size:14px;
+      font-weight:600;
+    }
+    .overlay-close{
+      width:26px;height:26px;border-radius:999px;
+      border:1px solid #e5e7eb;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;font-size:14px;
+    }
+
+    .region-grid{
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:18px;
+      font-size:13px;
+      margin-top:8px;
+    }
+    .region-card{
+      border-radius:14px;
+      border:1px solid #e5e7eb;
+      padding:10px 10px 11px;
+      background:#f9fafb;
+    }
+    .region-title{
+      font-weight:600;
+      margin-bottom:2px;
+    }
+    .region-lang{
+      font-size:12px;
+      color:var(--blue);
+      cursor:pointer;
+    }
+
+    .currency-row{
+      margin-top:16px;
+      padding-top:12px;
+      border-top:1px dashed #e5e7eb;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:13px;
+    }
+    .currency-select{
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      padding:6px 10px;
+      font-size:13px;
+    }
+
+    /* ───── HERO (şimdilik sadece stiller, içerik yok) ───── */
+
+    .hero{
+      margin-top:28px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns:minmax(0,2.1fr) minmax(0,1.4fr);
+      gap:24px;
+    }
+
+    .hero-left{
+      background:radial-gradient(circle at 10% 0%, #1e40af 0, #020617 55%, #020617 100%);
+      border-radius:24px;
+      padding:28px 28px 32px;
+      color:#e5e7eb;
+      box-shadow:0 24px 58px rgba(15,23,42,.68);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.5);
+      background:rgba(15,23,42,.75);
+      font-size:11px;
+      margin-bottom:20px;
+    }
+    .hero-pill-dot{
+      width:10px;height:10px;border-radius:999px;
+      background:radial-gradient(circle at 25% 0%,#22c55e 0,#22c55e 40%,#166534 100%);
+      box-shadow:0 0 10px rgba(34,197,94,.9);
+    }
+
+    .hero-title{
+      font-size:30px;
+      line-height:1.25;
+      font-weight:800;
+      letter-spacing:-0.02em;
+      margin-bottom:12px;
+    }
+    .hero-title span.green{color:#22c55e;}
+    .hero-sub{
+      font-size:14px;
+      color:#cbd5f5;
+      max-width:480px;
+      margin-bottom:22px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .btn{
+      border:none;
+      border-radius:999px;
+      padding:10px 18px;
+      font-size:14px;
+      font-weight:600;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-fason{
+      background:var(--green);
+      color:#ecfdf5;
+      box-shadow:0 10px 25px rgba(22,163,74,.5);
+    }
+    .btn-pazar{
+      background:transparent;
+      color:#e5e7eb;
+      border:1px solid rgba(148,163,184,.7);
+    }
+
+    .hero-note{
+      font-size:11px;
+      color:#9ca3af;
+      margin-top:6px;
+    }
+
+    .hero-right{
+      background:#020617;
+      color:#e5e7eb;
+      border-radius:24px;
+      padding:20px 22px;
+      box-shadow:0 24px 58px rgba(15,23,42,.80);
+    }
+    .hero-right-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:16px;
+      font-size:13px;
+    }
+    .hero-right-tag{
+      background:rgba(15,23,42,.7);
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.5);
+      font-size:11px;
+    }
+    .hero-right-tag span{
+      background:#fee2e2;
+      color:#b91c1c;
+      padding:3px 7px;
+      border-radius:999px;
+      margin-left:8px;
+      font-weight:600;
+    }
+
+    .metric-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      font-size:12px;
+    }
+    .metric-card{
+      background:#020617;
+      border-radius:14px;
+      padding:12px 12px 10px;
+      border:1px solid #111827;
+    }
+    .metric-label{
+      color:#9ca3af;
+      margin-bottom:6px;
+    }
+    .metric-value{
+      font-size:20px;
+      font-weight:700;
+      color:#f9fafb;
+      margin-bottom:2px;
+    }
+    .metric-helper{
+      font-size:11px;
+      color:#9ca3af;
+    }
+
+    /* ───── GLOBAL (ARKADA DÜNYA + ÜLKELER) ───── */
+
+    .global{
+      margin-top:40px;
+      margin-bottom:10px;
+    }
+    .global-card{
+      border-radius:30px;
+      padding:32px 28px 40px;
+      background:radial-gradient(circle at top, #e0f2fe 0, #f5f3ff 30%, #f9fafb 65%, #ffffff 100%);
+      box-shadow:0 20px 40px rgba(15,23,42,.12);
+      overflow:hidden;
+    }
+    .global-title{
+      text-align:center;
+      font-size:26px;
+      font-weight:800;
+      line-height:1.3;
+      margin-bottom:26px;
+      background:linear-gradient(90deg,#16a34a,#2563eb,#7c3aed);
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+
+    .global-world{
+      position:relative;
+      margin:0 auto;
+      max-width:850px;
+      aspect-ratio:16/9;
+    }
+    .global-world-img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      opacity:0.92;
+    }
+
+    .global-pill{
+      position:absolute;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      border-radius:999px;
+      background:#ffffff;
+      box-shadow:0 10px 22px rgba(15,23,42,.16);
+      font-size:14px;
+      min-width:135px;
+      justify-content:center;
+      animation:float 6s ease-in-out infinite;
+    }
+    .global-pill:nth-child(2){animation-delay:.3s;}
+    .global-pill:nth-child(3){animation-delay:.6s;}
+    .global-pill:nth-child(4){animation-delay:.9s;}
+    .global-pill:nth-child(5){animation-delay:1.2s;}
+    .global-pill:nth-child(6){animation-delay:1.5s;}
+    .global-pill:nth-child(7){animation-delay:1.8s;}
+    .global-pill:nth-child(8){animation-delay:2.1s;}
+    .global-pill:nth-child(9){animation-delay:2.4s;}
+
+    @keyframes float{
+      0%,100%{transform:translate(-50%,-50%) translateY(0);}
+      50%{transform:translate(-50%,-50%) translateY(-8px);}
+    }
+
+    .global-flag{
+      width:28px;
+      height:20px;
+      border-radius:4px;
+      overflow:hidden;
+      flex-shrink:0;
+    }
+    .global-flag img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .pill-us{top:58%;left:22%;}
+    .pill-uk{top:36%;left:49%;}
+    .pill-de{top:60%;left:43%;}
+    .pill-fr{top:75%;left:48%;}
+    .pill-nl{top:73%;left:30%;}
+    .pill-me{top:50%;left:58%;}
+    .pill-ee{top:45%;left:80%;}
+    .pill-tr{top:67%;left:62%;}
+    .pill-ae{top:79%;left:71%;}
+
+    /* ───── SEKTÖRLER ───── */
+
+    .sectors{
+      margin-top:30px;
+      padding:26px 0 8px;
+      background:#f9fafb;
+      border-top:1px solid #e5e7eb;
+      border-bottom:1px solid #e5e7eb;
+    }
+    .sectors-title{
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      margin-bottom:20px;
+      color:#0f172a;
+    }
+    .sector-grid{
+      max-width:1100px;
+      margin:0 auto 6px;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      row-gap:20px;
+      column-gap:40px;
+    }
+    .sector-item{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      font-size:15px;
+      color:#0f172a;
+    }
+    .sector-icon{
+      width:52px;
+      height:52px;
+      border-radius:16px;
+      background:#e5efff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      overflow:hidden;
+    }
+    .sector-icon img{
+      width:40px;
+      height:40px;
+      object-fit:contain;
+      display:block;
+    }
+
+    /* ───── GÜVEN ŞERİDİ (4 KART) ───── */
+
+    .trust-strip{
+      margin-top:18px;
+      margin-bottom:18px;
+    }
+    .trust-row{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+    }
+    .trust-card{
+      background:#ffffff;
+      border-radius:20px;
+      padding:14px 16px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      box-shadow:0 10px 25px rgba(15,23,42,.12);
+    }
+    .trust-icon{
+      width:42px;
+      height:42px;
+      border-radius:999px;
+      background:var(--blue);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      overflow:hidden;
+    }
+    .trust-icon img{
+      width:24px;
+      height:24px;
+      object-fit:contain;
+      display:block;
+    }
+    .trust-title{
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+    .trust-text{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.4;
+    }
+
+    /* ───── PARTNER LOGOLARI – 3 SATIR, YATAY SCROLL + OTOMATİK KAYMA ───── */
+
+    .partners{
+      background:#ffffff;
+      padding:32px 0 34px;
+      margin-bottom:18px;
+    }
+    .partners-title{
+      text-align:center;
+      font-size:28px;
+      font-weight:800;
+      margin-bottom:24px;
+      color:#020617;
+    }
+
+    .partners-viewport{
+      overflow:hidden;          /* scrollbar yok, içerik JS ile kayıyor */
+      cursor:grab;
+      user-select:none;
+      padding-bottom:6px;
+    }
+    .partners-viewport.is-dragging{
+      cursor:grabbing;
+    }
+
+    .partners-track{
+      display:grid;
+      grid-auto-flow:column;
+      grid-auto-columns:230px;      /* kart genişliği */
+      grid-template-rows:repeat(3,110px);
+      column-gap:18px;
+      row-gap:18px;
+      min-width:max-content;
+      padding:4px;
+    }
+
+    .partner-card{
+      background:#ffffff;
+      border-radius:18px;
+      border:1px solid #e5e7eb;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 8px 18px rgba(15,23,42,.06);
+    }
+    .partner-card img{
+      max-width:80%;
+      max-height:46px;
+      object-fit:contain;
+      display:block;
+    }
+
+    /* ───── BÜLTEN + SSS ───── */
+
+    .newsletter{
+      margin-top:28px;
+      margin-bottom:18px;
+    }
+    .newsletter-card{
+      background:#ffffff;
+      border-radius:20px;
+      padding:18px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      box-shadow:0 8px 20px rgba(15,23,42,.10);
+    }
+    .newsletter-text{
+      font-size:13px;
+    }
+    .newsletter-text strong{
+      color:var(--orange);
+    }
+    .newsletter-form{
+      flex:1;
+      display:flex;
+      gap:8px;
+    }
+    .newsletter-input{
+      flex:1;
+      border-radius:999px;
+      border:1px solid var(--border);
+      padding:9px 12px;
+      font-size:13px;
+      outline:none;
+    }
+    .newsletter-btn{
+      border:none;
+      border-radius:999px;
+      padding:9px 18px;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      background:var(--orange);
+      color:#ffffff;
+    }
+
+    .faq{
+      margin-bottom:32px;
+    }
+    .faq-title{
+      font-size:22px;
+      font-weight:800;
+      margin-bottom:10px;
+    }
+    .faq-card{
+      background:#ffffff;
+      border-radius:24px;
+      box-shadow:0 12px 32px rgba(15,23,42,.10);
+      overflow:hidden;
+    }
+    .faq-item + .faq-item{
+      border-top:1px solid var(--border);
+    }
+    .faq-header{
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      cursor:pointer;
+      font-size:14px;
+    }
+    .faq-header span{
+      font-weight:500;
+    }
+    .faq-toggle{
+      width:26px;height:26px;
+      border-radius:999px;
+      border:1px solid #2563eb;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#2563eb;
+      font-size:16px;
+      flex-shrink:0;
+    }
+    .faq-body{
+      padding:0 18px 14px;
+      font-size:13px;
+      color:var(--muted);
+      display:none;
+    }
+    .faq-item.active .faq-body{display:block;}
+    .faq-item.active .faq-toggle{background:#2563eb;color:#ffffff;}
+
+    /* ───── ALT KATEGORİ KARTLARI (şimdilik kullanmıyorsun, dursun) ───── */
+
+    .categories{
+      margin-bottom:32px;
+      margin-top:26px;
+    }
+    .categories h2{
+      font-size:18px;
+      margin-bottom:4px;
+    }
+    .categories-sub{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:14px;
+    }
+    .cat-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+    }
+    .cat-card{
+      background:#ffffff;
+      border-radius:20px;
+      padding:18px 18px 16px;
+      box-shadow:0 14px 32px rgba(15,23,42,.18);
+      border-top:3px solid transparent;
+    }
+    .cat-card.fason{border-top-color:var(--green);}
+    .cat-card.pazar{border-top-color:var(--orange);}
+    .cat-card.tedarik{border-top-color:var(--blue);}
+    .cat-label{
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .cat-title{
+      font-size:15px;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+    .cat-text{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:14px;
+    }
+    .cat-cta{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:8px 13px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      font-size:12px;
+      font-weight:600;
+      cursor:pointer;
+      background:#f9fafb;
+    }
+
+    /* ───── FOOTER ───── */
+
+    footer{
+      margin-top:36px;
+      background:#f9fafb;
+      border-top:1px solid #e5e7eb;
+      font-size:13px;
+      color:var(--text);
+    }
+
+    .footer-main{
+      max-width:1240px;
+      margin:0 auto;
+      padding:26px 16px 22px;
+      display:grid;
+      grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) minmax(0,1.1fr) minmax(0,1.1fr) minmax(0,1.1fr);
+      gap:32px;
+    }
+
+    .footer-title{
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .footer-list{
+      list-style:none;
+    }
+    .footer-list li + li{margin-top:4px;}
+    .footer-list a{color:var(--text);}
+    .footer-list a:hover{color:var(--blue);}
+
+    .footer-social{
+      display:flex;
+      gap:10px;
+      margin-top:8px;
+    }
+    .footer-social-btn{
+      width:32px;height:32px;border-radius:999px;
+      background:#020617;
+      border:1px solid #1f2937;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:15px;
+      cursor:pointer;
+      color:#f9fafb;
+    }
+
+    .cert-buttons{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:8px;
+    }
+    .cert-btn{
+      padding:8px 16px;
+      border-radius:999px;
+      border:1px dashed #9ca3af;
+      background:transparent;
+      color:var(--text);
+      font-size:12px;
+      text-align:center;
+      cursor:pointer;
+    }
+
+    .footer-legal{
+      background:#020617;
+      color:#e5e7eb;
+    }
+    .footer-legal-inner{
+      max-width:1240px;
+      margin:0 auto;
+      padding:8px 16px 10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      font-size:11px;
+    }
+    .footer-legal-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+    }
+    .footer-legal-links a{color:#9ca3af;}
+    .footer-legal-links a:hover{color:#e5e7eb;}
+
+    /* Yukarı çık butonu */
+    .back-top{
+      position:fixed;
+      right:26px;
+      bottom:26px;
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border:none;
+      background:#020617;
+      color:#f9fafb;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 14px 30px rgba(15,23,42,.7);
+      font-size:20px;
+      z-index:55;
+    }
+
+    /* responsive */
+
+    @media (max-width:1024px){
+      body{padding-top:160px;}
+      .hero-grid{grid-template-columns:1fr;}
+      .hero-right{order:-1;}
+      .trust-row{grid-template-columns:repeat(2,minmax(0,1fr));}
+      .sector-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+      .cat-grid{grid-template-columns:1fr;}
+      .footer-main{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+      }
+    }
+    @media (max-width:768px){
+      body{padding-top:180px;}
+      .nav{flex-direction:column;align-items:flex-start;gap:10px;}
+      .main-nav{justify-content:flex-start;}
+      .trust-row{grid-template-columns:1fr;}
+      .sector-grid{grid-template-columns:1fr;}
+      .newsletter-card{flex-direction:column;align-items:flex-start;}
+      .footer-main{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+      .footer-legal-inner{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+    @media (max-width:640px){
+      .footer-main{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ███ ÜST SABİT ALAN ███ -->
+  <div class="top-shell">
+    <div class="top-bar">
+      <div class="top-bar-inner">
+        <span>Dijitalleşen sanayinin pazaryerinde mağaza açın, hemen satışa başlayın.</span>
+        <span>Mağaza aç • Satıcı destek</span>
+      </div>
+    </div>
+
+    <header>
+      <nav class="nav">
+        <!-- LOGO -->
+        <a href="index.html" class="logo">
+          <img src="images/cnclogo.png" alt="Cncitem">
+        </a>
+
+        <div class="main-nav">
+          <ul>
+            <li><a href="index.html">ANASAYFA</a></li>
+            <li><a href="pazaryeri.html">PAZARYERİ</a></li>
+            <li><a href="fasonyeri.html">FASONYERİ</a></li>
+            <li><a href="haberyeri.html">HABERYERİ</a></li>
+            <li><a href="#">KAMPANYALAR</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <a href="hesabim.html" class="nav-card">
+            <div class="nav-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/>
+                <path d="M5 20c0-3.04 3.13-5 7-5s7 1.96 7 5"/>
+              </svg>
+            </div>
+            <span>Hesabım</span>
+          </a>
+
+          <button class="lang-trigger" id="langTrigger">
+            <span class="lang-dot"></span>
+            <span>TR • TRY</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+  </div>
+
+  <!-- DİL + PARA BİRİMİ OVERLAY -->
+  <div class="overlay" id="langOverlay">
+    <div class="overlay-panel">
+      <div class="overlay-header">
+        <span>Dil ve para birimi seçin</span>
+        <button class="overlay-close" id="overlayClose">✕</button>
+      </div>
+
+      <div class="region-grid">
+        <div class="region-card">
+          <div class="region-title">Europe</div>
+          <div class="region-lang">English</div>
+        </div>
+        <div class="region-card">
+          <div class="region-title">United Kingdom</div>
+          <div class="region-lang">English (UK)</div>
+        </div>
+        <div class="region-card">
+          <div class="region-title">Türkiye</div>
+          <div class="region-lang">Türkçe</div>
+        </div>
+        <div class="region-card">
+          <div class="region-title">USA &amp; Canada</div>
+          <div class="region-lang">English (USA)</div>
+        </div>
+        <div class="region-card">
+          <div class="region-title">Asia</div>
+          <div class="region-lang">简体中文</div>
+        </div>
+      </div>
+
+      <div class="currency-row">
+        <span>Para birimi:</span>
+        <select class="currency-select">
+          <option>TRY – Türk Lirası</option>
+          <option>EUR – Euro</option>
+          <option>USD – Amerikan Doları</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANA İÇERİK -->
+  <main>
+
+    <!-- GLOBAL DÜNYA + ÜLKELER -->
+    <section class="global">
+      <div class="container">
+        <div class="global-card">
+          <h2 class="global-title">
+            Cncitem ile Üretim Süreçlerinizi Kolaylaştırın
+          </h2>
+
+          <div class="global-world">
+            <img src="images/world.png" class="global-world-img" alt="World">
+
+            <div class="global-pill pill-us">
+              <span class="global-flag"><img src="images/america.png" alt=""></span>
+              <span>AMERİKA</span>
+            </div>
+            <div class="global-pill pill-uk">
+              <span class="global-flag"><img src="images/england.png" alt=""></span>
+              <span>İNGİLTERE</span>
+            </div>
+            <div class="global-pill pill-de">
+              <span class="global-flag"><img src="images/de.png" alt=""></span>
+              <span>ALMANYA</span>
+            </div>
+            <div class="global-pill pill-tr">
+              <span class="global-flag"><img src="images/turk.png" alt=""></span>
+              <span>TÜRKİYE</span>
+            </div>
+            <div class="global-pill pill-fr">
+              <span class="global-flag"><img src="images/fu.png" alt=""></span>
+              <span>FRANSA</span>
+            </div>
+            <div class="global-pill pill-nl">
+              <span class="global-flag"><img src="images/nl.png" alt=""></span>
+              <span>HOLLANDA</span>
+            </div>
+            <div class="global-pill pill-me">
+              <span class="global-flag"><img src="images/me.png" alt=""></span>
+              <span>KARADAĞ</span>
+            </div>
+            <div class="global-pill pill-ee">
+              <span class="global-flag"><img src="images/ee.png" alt=""></span>
+              <span>ESTONYA</span>
+            </div>
+            <div class="global-pill pill-ae">
+              <span class="global-flag"><img src="images/ae.png" alt=""></span>
+              <span>DUBAİ</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEKTÖR İKONLARI -->
+    <section class="sectors">
+      <div class="container">
+        <h2 class="sectors-title">Tüm endüstrilerde hassas üretim uygulamaları</h2>
+
+        <div class="sector-grid">
+          <div class="sector-item">
+            <div class="sector-icon">
+              <img src="images/110.png" alt="Uzay ve Havacılık">
+            </div>
+            <span>Uzay ve Havacılık</span>
+          </div>
+
+          <div class="sector-item">
+            <div class="sector-icon">
+              <img src="images/88.png" alt="Otomotiv">
+            </div>
+            <span>Otomotiv</span>
+          </div>
+
+          <div class="sector-item">
+            <div class="sector-icon">
+              <img src="images/33.png" alt="Savunma">
+            </div>
+            <span>Savunma</span>
+          </div>
+
+          <div class="sector-item">
+            <div class="sector-icon">
+              <img src="images/100.png" alt="Tüketici Ürünleri">
+            </div>
+            <span>Tüketici Ürünleri</span>
+          </div>
+
+          <div class="sector-item">
+            <div class="sector-icon">
+              <img src="images/77.png" alt="Elektronik ve IoT">
+            </div>
+            <span>Elektronik ve IoT</span>
+          </div>
+
+          <div class="sector-item">
+            <div class="sector-icon">
+              <img src="images/44.png" alt="Enerji">
+            </div>
+            <span>Enerji</span>
+          </div>
+
+          <div class="sector-item">
+            <div class="sector-icon">
+              <img src="images/99.png" alt="Endüstriyel">
+            </div>
+            <span>Endüstriyel</span>
+          </div>
+
+          <div class="sector-item">
+            <div class="sector-icon">
+              <img src="images/66.png" alt="Medikal & Dental">
+            </div>
+            <span>Medikal &amp; Dental</span>
+          </div>
+
+          <div class="sector-item">
+            <div class="sector-icon">
+              <img src="images/55.png" alt="Robotik ve Makine İmalatı">
+            </div>
+            <span>Robotik ve Makine İmalatı</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTNERLER – 3 SATIR, OTOMATİK + MOUSE İLE KAYDIRMALI -->
+    <section class="partners">
+      <div class="container">
+        <h2 class="partners-title">İş ortaklarımız ve birlikte çalıştığımız kurumlar</h2>
+
+        <div class="partners-viewport" id="partnersViewport">
+          <div class="partners-track">
+            <!-- LOGO LİSTESİ (istediğin kadar ekleyebilirsin) -->
+            <div class="partner-card"><img src="images/mastercard.png" alt="Mastercard"></div>
+            <div class="partner-card"><img src="images/tc.png" alt="Mercury"></div>
+            <div class="partner-card"><img src="images/qnb.png" alt="QNB"></div>
+            <div class="partner-card"><img src="images/fe.png" alt="FedEx"></div>
+            <div class="partner-card"><img src="images/yurtiçikargo.png" alt="Yurtiçi Kargo"></div>
+            <div class="partner-card"><img src="images/isbank.png" alt="İş Bankası"></div>
+            <div class="partner-card"><img src="images/te.png" alt="TE"></div>
+            <div class="partner-card"><img src="images/hj.png" alt="HJ"></div>
+            <div class="partner-card"><img src="images/pp.png" alt="PP"></div>
+            <div class="partner-card"><img src="images/vakifbank.png" alt="Vakıfbank"></div>
+            <div class="partner-card"><img src="images/iyzico.png" alt="iyzico"></div>
+            <div class="partner-card"><img src="images/visa.png" alt="Visa"></div>
+            <div class="partner-card"><img src="images/ups.png" alt="UPS"></div>
+            <div class="partner-card"><img src="images/shopify.png" alt="Shopify"></div>
+            <div class="partner-card"><img src="images/tnt.png" alt="TNT"></div>
+            <div class="partner-card"><img src="images/akbank.png" alt="Akbank"></div>
+            <div class="partner-card"><img src="images/yapikredi.png" alt="Yapı Kredi"></div>
+            <div class="partner-card"><img src="images/mükellef.png" alt="Mükellef"></div>
+
+            <!-- tekrar ekleyelim ki loop yapsın -->
+            <div class="partner-card"><img src="images/mastercard.png" alt="Mastercard"></div>
+            <div class="partner-card"><img src="images/tc.png" alt="Mercury"></div>
+            <div class="partner-card"><img src="images/qnb.png" alt="QNB"></div>
+            <div class="partner-card"><img src="images/fe.png" alt="FedEx"></div>
+            <div class="partner-card"><img src="images/yurtiçikargo.png" alt="Yurtiçi Kargo"></div>
+            <div class="partner-card"><img src="images/isbank.png" alt="İş Bankası"></div>
+            <div class="partner-card"><img src="images/te.png" alt="TE"></div>
+            <div class="partner-card"><img src="images/hj.png" alt="HJ"></div>
+            <div class="partner-card"><img src="images/pp.png" alt="PP"></div>
+            <div class="partner-card"><img src="images/vakifbank.png" alt="Vakıfbank"></div>
+            <div class="partner-card"><img src="images/iyzico.png" alt="iyzico"></div>
+            <div class="partner-card"><img src="images/visa.png" alt="Visa"></div>
+            <div class="partner-card"><img src="images/ups.png" alt="UPS"></div>
+            <div class="partner-card"><img src="images/shopify.png" alt="Shopify"></div>
+            <div class="partner-card"><img src="images/tnt.png" alt="TNT"></div>
+            <div class="partner-card"><img src="images/akbank.png" alt="Akbank"></div>
+            <div class="partner-card"><img src="images/yapikredi.png" alt="Yapı Kredi"></div>
+            <div class="partner-card"><img src="images/mükellef.png" alt="Mükellef"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SSS -->
+    <section class="faq">
+      <div class="container">
+        <h2 class="faq-title">Sıkça Sorulan Sorular</h2>
+        <div class="faq-card">
+          <div class="faq-item active">
+            <div class="faq-header">
+              <span>Mağazada satışa başlamak için ne yapmam gerekiyor?</span>
+              <div class="faq-toggle">−</div>
+            </div>
+            <div class="faq-body">
+              Mağazanızı açtıktan sonra ürünlerinizi panelden ekleyip fiyatlandırarak satışa başlayabilirsiniz.
+              Başlangıç döneminde mağaza açmak ücretsizdir, komisyon ve paket yapısı daha sonra netleştirilecektir.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-header">
+              <span>Ödemeler nasıl güvence altına alınır?</span>
+              <div class="faq-toggle">+</div>
+            </div>
+            <div class="faq-body">
+              Ödemeler anlaşmalı bankalar üzerinden alınır, 3D Secure ve SSL ile koruma sağlanır;
+              tahsilat sistemi Cncitem üzerinden yönetilir.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-header">
+              <span>Parkurda.com’dan farkı ne olacak?</span>
+              <div class="faq-toggle">+</div>
+            </div>
+            <div class="faq-body">
+              Cncitem tamamen CNC ve metal işleme dünyasına odaklanmış, niş ve 2025 tasarım anlayışıyla hazırlanmış bir platformdur.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bülten -->
+    <section class="newsletter">
+      <div class="container">
+        <div class="newsletter-card">
+          <div class="newsletter-text">
+            <strong>Fırsat ve yeniliklerden</strong> haberdar olmak için bültenimize abone olun!
+          </div>
+          <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="E-posta adresiniz">
+            <button type="submit" class="newsletter-btn">Abone Ol</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ███ FOOTER ███ -->
+  <footer>
+    <div class="footer-main">
+      <div>
+        <div class="footer-title">Cncitem</div>
+        <ul class="footer-list">
+          <li><a href="#">Hakkımızda</a></li>
+          <li><a href="#">İletişim</a></li>
+          <li><a href="#">Mağaza Aç</a></li>
+          <li><a href="#">Cncitem'de Güvenlik</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-title">Kategoriler</div>
+        <ul class="footer-list">
+          <li><a href="#">Elektrik &amp; Elektronik</a></li>
+          <li><a href="#">Mekanik</a></li>
+          <li><a href="#">Endüstriyel Otomasyon</a></li>
+          <li><a href="#">Rulman</a></li>
+          <li><a href="#">Test &amp; Ölçüm Aletleri</a></li>
+          <li><a href="#">Hırdavat &amp; El Aletleri</a></li>
+          <li><a href="#">Makine Aksesuarları</a></li>
+          <li><a href="#">Takım Tutucular</a></li>
+          <li><a href="#">Kesici Takımlar</a></li>
+          <li><a href="#">Sarf Malzemeleri</a></li>
+          <li><a href="#">Madeni Yağlar &amp; Sıvılar</a></li>
+          <li><a href="#">Kalıp Elemanları</a></li>
+          <li><a href="#">Universal</a></li>
+          <li><a href="#">Servis / Tamir / Bakım</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-title">Destek</div>
+        <ul class="footer-list">
+          <li><a href="#">Sıkça Sorulan Sorular</a></li>
+          <li><a href="#">Canlı Destek</a></li>
+          <li><a href="#">İade &amp; Değişim</a></li>
+          <li><a href="#">Mesafeli Satış Sözleşmesi</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-title">Sosyal Medya</div>
+        <div class="footer-social">
+          <button class="footer-social-btn">f</button>
+          <button class="footer-social-btn">▶</button>
+          <button class="footer-social-btn">in</button>
+          <button class="footer-social-btn">X</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-title">Güvenlik Sertifikaları</div>
+        <div class="cert-buttons">
+          <button class="cert-btn">ETBİS LOGO</button>
+          <button class="cert-btn">TRGO LOGO</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      <div class="footer-legal-inner">
+        <div>© 2025 Cncitem.shop • CNC Parça, Fason &amp; Pazaryeri Platformu.</div>
+        <div class="footer-legal-links">
+          <a href="#">Çerez Tercihleri</a>
+          <a href="#">Kişisel Verilerin Korunması</a>
+          <a href="#">Kullanım Koşulları</a>
+          <a href="#">Mesafeli Satış</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Yukarı çık butonu -->
+  <button class="back-top" id="backTop">↑</button>
+
+  <script>
+    // Dil & para birimi overlay
+    const langTrigger = document.getElementById('langTrigger');
+    const langOverlay = document.getElementById('langOverlay');
+    const overlayClose = document.getElementById('overlayClose');
+
+    if (langTrigger && langOverlay && overlayClose) {
+      langTrigger.addEventListener('click', () => {
+        langOverlay.classList.add('open');
+      });
+      overlayClose.addEventListener('click', () => {
+        langOverlay.classList.remove('open');
+      });
+      langOverlay.addEventListener('click', (e) => {
+        if(e.target === langOverlay){
+          langOverlay.classList.remove('open');
+        }
+      });
+    }
+
+    // SSS aç-kapa
+    document.querySelectorAll('.faq-item').forEach(function(item){
+      const header = item.querySelector('.faq-header');
+      header.addEventListener('click', function(){
+        const currentlyActive = document.querySelector('.faq-item.active');
+        if(currentlyActive && currentlyActive !== item){
+          currentlyActive.classList.remove('active');
+          currentlyActive.querySelector('.faq-toggle').textContent = '+';
+        }
+        const toggle = item.querySelector('.faq-toggle');
+        const isActive = item.classList.toggle('active');
+        toggle.textContent = isActive ? '−' : '+';
+      });
+    });
+
+    // Yukarı çık butonu
+    const backTop = document.getElementById('backTop');
+    window.addEventListener('scroll', () => {
+      backTop.style.display = window.scrollY > 250 ? 'flex' : 'none';
+    });
+    backTop.addEventListener('click', () => {
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+
+    // PARTNERLER: otomatik sağdan sola kayma + mouse ile sürükleme
+    const partnersViewport = document.getElementById('partnersViewport');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let autoScroll = true;
+
+    if (partnersViewport) {
+      partnersViewport.addEventListener('mousedown', (e) => {
+        isDown = true;
+        autoScroll = false;            // drag yaparken otomatik kayma dur
+        partnersViewport.classList.add('is-dragging');
+        startX = e.pageX - partnersViewport.offsetLeft;
+        scrollLeft = partnersViewport.scrollLeft;
+      });
+
+      window.addEventListener('mouseup', () => {
+        if(!isDown) return;
+        isDown = false;
+        partnersViewport.classList.remove('is-dragging');
+        // biraz sonra tekrar otomatik devam etsin
+        setTimeout(() => { autoScroll = true; }, 600);
+      });
+
+      partnersViewport.addEventListener('mouseleave', () => {
+        isDown = false;
+        partnersViewport.classList.remove('is-dragging');
+      });
+
+      partnersViewport.addEventListener('mousemove', (e) => {
+        if(!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - partnersViewport.offsetLeft;
+        const walk = (x - startX) * 1.3; // sürükleme hız çarpanı
+        partnersViewport.scrollLeft = scrollLeft - walk;
+      });
+
+      // touch (mobil) desteği
+      partnersViewport.addEventListener('touchstart', (e) => {
+        autoScroll = false;
+        isDown = true;
+        partnersViewport.classList.add('is-dragging');
+        startX = e.touches[0].pageX - partnersViewport.offsetLeft;
+        scrollLeft = partnersViewport.scrollLeft;
+      }, {passive:true});
+
+      partnersViewport.addEventListener('touchend', () => {
+        isDown = false;
+        partnersViewport.classList.remove('is-dragging');
+        setTimeout(() => { autoScroll = true; }, 600);
+      });
+
+      partnersViewport.addEventListener('touchmove', (e) => {
+        if(!isDown) return;
+        const x = e.touches[0].pageX - partnersViewport.offsetLeft;
+        const walk = (x - startX) * 1.3;
+        partnersViewport.scrollLeft = scrollLeft - walk;
+      }, {passive:true});
+
+      // otomatik kaydırma (loop)
+      const speed = 0.6; // px/frame
+      function autoSlide(){
+        if(autoScroll){
+          partnersViewport.scrollLeft += speed;
+          const maxScroll = partnersViewport.scrollWidth - partnersViewport.clientWidth;
+          if(partnersViewport.scrollLeft >= maxScroll){
+            partnersViewport.scrollLeft = 0; // başa sar
+          }
+        }
+        requestAnimationFrame(autoSlide);
+      }
+      requestAnimationFrame(autoSlide);
+    }
+  </script>
+</body>
+</html>

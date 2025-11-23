@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Sepetim – Cncitem Pazaryeri</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root{
+      --bg:#f3f4f6;
+      --white:#ffffff;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --blue:#2563eb;
+      --blue-dark:#1d4ed8;
+      --navy:#020617;
+      --green:#16a34a;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;}
+    a{text-decoration:none;color:inherit;}
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      padding-top:100px;
+    }
+    .container{max-width:1240px;margin:0 auto;padding:0 16px;}
+
+    /* TOP BAR + NAV (index’teki ile aynı tut) */
+    .top-shell{
+      position:fixed;
+      inset:0 0 auto 0;
+      z-index:50;
+      background:#ffffff;
+      box-shadow:0 10px 30px rgba(15,23,42,.08);
+    }
+    .top-bar{
+      background:var(--navy);
+      color:#e5e7eb;
+      font-size:12px;
+    }
+    .top-bar-inner{
+      max-width:1240px;
+      margin:0 auto;
+      padding:6px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    header{background:#ffffff;}
+    .nav{
+      max-width:1240px;
+      margin:0 auto;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+    .logo{display:flex;align-items:center;}
+    .logo img{height:60px;width:auto;display:block;}
+
+    .main-nav{flex:1;display:flex;justify-content:center;}
+    .main-nav ul{
+      list-style:none;
+      display:flex;
+      gap:32px;
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:.16em;
+    }
+    .main-nav a{color:#111827;}
+    .main-nav a:hover{color:var(--blue);}
+    .main-nav a.active{color:var(--blue-dark);}
+
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .nav-card{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#f9fafb;
+      border-radius:12px;
+      border:1px solid #e5e7eb;
+      padding:8px 14px;
+      box-shadow:0 4px 14px rgba(15,23,42,.15);
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      color:#111827;
+      white-space:nowrap;
+    }
+    .nav-icon{
+      width:32px;height:32px;
+      border-radius:10px;
+      background:#eef2ff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .nav-icon svg{
+      width:20px;height:20px;
+      stroke:#4b5563;
+      stroke-width:1.8;
+      fill:none;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .lang-trigger{
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      padding:6px 10px;
+      font-size:12px;
+      background:#ffffff;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+    }
+    .lang-dot{width:6px;height:6px;border-radius:999px;background:#22c55e;}
+
+    /* SEPET SAYFASI */
+
+    .cart-page{
+      margin-top:32px;
+      margin-bottom:32px;
+    }
+    .cart-shell{
+      background:#ffffff;
+      border-radius:24px;
+      box-shadow:0 18px 40px rgba(15,23,42,.12);
+      padding:22px 22px 24px;
+      display:grid;
+      grid-template-columns:minmax(0,2fr) minmax(0,1.2fr);
+      gap:24px;
+      align-items:flex-start;
+    }
+
+    .cart-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:12px;
+    }
+    .cart-title{
+      font-size:22px;
+      font-weight:700;
+    }
+    .cart-count{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    table.cart-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+    }
+    .cart-table thead{
+      background:#f9fafb;
+    }
+    .cart-table th,
+    .cart-table td{
+      padding:10px 8px;
+      text-align:left;
+      border-bottom:1px solid #e5e7eb;
+    }
+    .cart-table th{
+      font-weight:600;
+      color:#4b5563;
+      font-size:12px;
+    }
+    .cart-item-name{font-weight:600;}
+    .cart-item-sub{font-size:11px;color:#9ca3af;}
+    .qty-input{
+      width:60px;
+      padding:4px 6px;
+      border-radius:8px;
+      border:1px solid #d1d5db;
+      font-size:13px;
+    }
+    .cart-remove{
+      font-size:12px;
+      color:#ef4444;
+      cursor:pointer;
+    }
+
+    /* ÖZET + İYZICO */
+
+    .cart-summary{
+      border-radius:20px;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
+      padding:16px 16px 18px;
+    }
+    .cart-summary-title{
+      font-size:16px;
+      font-weight:700;
+      margin-bottom:10px;
+    }
+    .summary-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:6px;
+      font-size:13px;
+    }
+    .summary-row.total{
+      border-top:1px dashed #d1d5db;
+      padding-top:8px;
+      margin-top:4px;
+      font-weight:700;
+      font-size:14px;
+    }
+    .summary-note{
+      font-size:11px;
+      color:#6b7280;
+      margin:8px 0 10px;
+    }
+
+    .iyzico-badge{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:8px;
+      font-size:12px;
+      color:#4b5563;
+    }
+    .iyzico-badge span.tag{
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid #22c55e;
+      font-size:11px;
+      color:#16a34a;
+      background:#dcfce7;
+    }
+
+    .iyzico-btn{
+      width:100%;
+      border:none;
+      border-radius:999px;
+      padding:11px 16px;
+      background:#00a3e0; /* iyzico mavisi tarzı */
+      color:#ffffff;
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow:0 14px 30px rgba(0,163,224,.45);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    .iyzico-btn span.icon{
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      background:#ffffff22;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+    }
+
+    .back-link{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:12px;
+      color:#2563eb;
+      margin-top:10px;
+      cursor:pointer;
+    }
+
+    /* FOOTER KISA (istersen full footer kodunu buraya yapıştırabilirsin) */
+    footer{
+      margin-top:20px;
+      padding:12px 16px 18px;
+      font-size:12px;
+      color:#6b7280;
+      text-align:center;
+    }
+
+    @media(max-width:1024px){
+      body{padding-top:160px;}
+      .cart-shell{
+        grid-template-columns:1fr;
+      }
+    }
+    @media(max-width:768px){
+      body{padding-top:180px;}
+      .nav{flex-direction:column;align-items:flex-start;gap:10px;}
+      .main-nav{justify-content:flex-start;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ÜST BAR + HEADER -->
+  <div class="top-shell">
+    <div class="top-bar">
+      <div class="top-bar-inner">
+        <span>Dijitalleşen sanayinin pazaryerinde güvenli alışveriş.</span>
+        <span>Mağaza aç • Satıcı destek</span>
+      </div>
+    </div>
+
+    <header>
+      <nav class="nav">
+        <a href="index.html" class="logo">
+          <img src="images/cnclogo.png" alt="Cncitem">
+        </a>
+
+        <div class="main-nav">
+          <ul>
+            <li><a href="pazaryeri.html" class="active">PAZARYERİ</a></li>
+            <li><a href="fasonyeri.html">FASONYERİ</a></li>
+            <li><a href="haberyeri.html">HABERYERİ</a></li>
+            <li><a href="#">KAMPANYALAR</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <a href="hesabim.html" class="nav-card">
+            <div class="nav-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/>
+                <path d="M5 20c0-3.04 3.13-5 7-5s7 1.96 7 5"/>
+              </svg>
+            </div>
+            <span>Hesabım</span>
+          </a>
+
+          <button class="lang-trigger">
+            <span class="lang-dot"></span>
+            <span>TR • TRY</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+  </div>
+
+  <!-- SEPET -->
+  <section class="cart-page">
+    <div class="container">
+      <div class="cart-shell">
+        <!-- Sol: Ürünler -->
+        <div>
+          <div class="cart-header">
+            <div class="cart-title">Sepetim</div>
+            <div class="cart-count">3 ürün</div><!-- JS ile güncellenir -->
+          </div>
+
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th>Ürün</th>
+                <th>Birim Fiyat</th>
+                <th>Adet</th>
+                <th>Ara Toplam</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- ÖRNEK SATIRLAR – sonra JS ile doldururuz -->
+              <tr>
+                <td>
+                  <div class="cart-item-name">CNC Freze Uç Seti</div>
+                  <div class="cart-item-sub">Kod: CNC-1245 • Tedarikçi: ABC Makina</div>
+                </td>
+                <td>₺1.250,00</td>
+                <td><input type="number" class="qty-input" value="2" min="1"></td>
+                <td>₺2.500,00</td>
+                <td><span class="cart-remove">Kaldır</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="cart-item-name">Lineer Kızak 20mm</div>
+                  <div class="cart-item-sub">Kod: LK-20 • Tedarikçi: CncStore</div>
+                </td>
+                <td>₺850,00</td>
+                <td><input type="number" class="qty-input" value="1" min="1"></td>
+                <td>₺850,00</td>
+                <td><span class="cart-remove">Kaldır</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="back-link" onclick="window.location.href='pazaryeri.html'">
+            ← Alışverişe devam et
+          </div>
+        </div>
+
+        <!-- Sağ: Özet + İyzico -->
+        <div>
+          <div class="cart-summary">
+            <div class="cart-summary-title">Sipariş Özeti</div>
+
+            <div class="summary-row">
+              <span>Ara Toplam</span>
+              <span>₺3.350,00</span>
+            </div>
+            <div class="summary-row">
+              <span>Kargo</span>
+              <span>₺0,00</span>
+            </div>
+            <div class="summary-row total">
+              <span>Toplam (KDV dahil)</span>
+              <span>₺3.350,00</span>
+            </div>
+
+            <p class="summary-note">
+              Ödeme altyapısı iyzico güvencesiyle sağlanmaktadır. Kart bilgileriniz Cncitem tarafından
+              tutulmaz, iyzico üzerinden şifrelenerek işlenir.
+            </p>
+
+            <div class="iyzico-badge">
+              <span class="tag">iyzico ile Öde</span>
+              <span>3D Secure destekli, güvenli ödeme.</span>
+            </div>
+
+            <!-- İYZİCO ENTEGRASYON FORMU (BACKEND’İN BURAYA DEĞER GÖNDERMESİ GEREK) -->
+            <form method="POST" action="/iyzico-odeme">
+              <!-- Buradaki hidden input’lar backend’den doldurulacak -->
+              <input type="hidden" name="basket_id" value="CNCITEM-SEPET-001">
+              <input type="hidden" name="price" value="3350.00">
+              <input type="hidden" name="paid_price" value="3350.00">
+              <input type="hidden" name="currency" value="TRY">
+              <!-- vs. diğer zorunlu alanlar backend’de setlenecek -->
+
+              <button type="submit" class="iyzico-btn">
+                <span class="icon">💳</span>
+                <span>iyzico ile Güvenli Ödeme Yap</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Cncitem.shop • CNC Parça, Fason &amp; Pazaryeri Platformu.
+  </footer>
+
+</body>
+</html>

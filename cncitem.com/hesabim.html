@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Hesabım – Kayıt Ol | Cncitem</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root{
+      --bg:#f3f4f6;
+      --white:#ffffff;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --blue:#2563eb;
+      --blue-dark:#1d4ed8;
+      --navy:#020617;
+      --green:#16a34a;
+      --green-dark:#15803d;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;}
+    a{text-decoration:none;color:inherit;}
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      padding-top:140px; /* sabit header boşluğu */
+    }
+
+    .container{max-width:1240px;margin:0 auto;padding:0 16px;}
+
+    /* ÜST BAR + NAV (fasonyeridekiyle aynı) */
+    .top-shell{
+      position:fixed;
+      inset:0 0 auto 0;
+      z-index:50;
+      background:#ffffff;
+      box-shadow:0 10px 30px rgba(15,23,42,.08);
+    }
+    .top-bar{
+      background:var(--navy);
+      color:#e5e7eb;
+      font-size:12px;
+    }
+    .top-bar-inner{
+      max-width:1240px;
+      margin:0 auto;
+      padding:6px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    header{background:#ffffff;}
+    .nav{
+      max-width:1240px;
+      margin:0 auto;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+    }
+    .logo img{
+      height:60px;
+      width:auto;
+      display:block;
+    }
+    .main-nav{
+      flex:1;
+      display:flex;
+      justify-content:center;
+    }
+    .main-nav ul{
+      list-style:none;
+      display:flex;
+      gap:32px;
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:.16em;
+    }
+    .main-nav a{color:#111827;}
+    .main-nav a:hover{color:var(--blue);}
+    .main-nav a.active{color:var(--blue-dark);}
+
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .nav-card{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#f9fafb;
+      border-radius:12px;
+      border:1px solid #e5e7eb;
+      padding:8px 14px;
+      box-shadow:0 4px 14px rgba(15,23,42,.15);
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      color:#111827;
+      white-space:nowrap;
+    }
+    .nav-icon{
+      width:32px;height:32px;
+      border-radius:10px;
+      background:#eef2ff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .nav-icon svg{
+      width:20px;
+      height:20px;
+      stroke:#4b5563;
+      stroke-width:1.8;
+      fill:none;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .lang-trigger{
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      padding:6px 10px;
+      font-size:12px;
+      background:#ffffff;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+    }
+    .lang-dot{width:6px;height:6px;border-radius:999px;background:#22c55e;}
+
+    /* HESAP SAYFASI LAYOUTU */
+
+    .account-page{
+      padding:32px 0 40px;
+    }
+    .account-shell{
+      background:#ffffff;
+      border-radius:24px;
+      box-shadow:0 24px 60px rgba(15,23,42,.12);
+      display:grid;
+      grid-template-columns:minmax(0,1.15fr) minmax(0,1.1fr);
+      overflow:hidden;
+      min-height:540px;
+    }
+
+    /* Sol taraf (kampanya / görsel) */
+    .account-left{
+      position:relative;
+      padding:40px 40px 30px;
+      color:#f9fafb;
+      background:radial-gradient(circle at 0 0,#f97316 0,#7c3aed 40%,#0f172a 85%);
+    }
+    .account-left h1{
+      font-size:32px;
+      line-height:1.2;
+      margin-bottom:18px;
+      max-width:360px;
+    }
+    .account-left p{
+      font-size:15px;
+      color:#e5e7eb;
+      max-width:360px;
+      margin-bottom:22px;
+    }
+    .account-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(15,23,42,.7);
+      font-size:13px;
+      margin-bottom:18px;
+    }
+    .account-discount{
+      margin-top:8px;
+      display:inline-block;
+      padding:10px 16px;
+      border-radius:999px;
+      background:#22c55e;
+      color:#022c22;
+      font-weight:700;
+      font-size:15px;
+    }
+    .account-figure{
+      position:absolute;
+      right:12px;
+      bottom:0;
+      top:auto;
+      width:260px;
+      max-height:420px;
+      object-fit:contain;
+    }
+
+    /* Sağ taraf (form) */
+    .account-right{
+      padding:32px 36px 32px;
+      background:#f9fafb;
+    }
+    .account-right h2{
+      font-size:24px;
+      margin-bottom:6px;
+    }
+    .account-right .sub{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:18px;
+    }
+
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .field-group{
+      display:flex;
+      gap:12px;
+    }
+    .field{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:13px;
+    }
+    label{
+      font-weight:500;
+    }
+    input, select{
+      border-radius:8px;
+      border:1px solid var(--border);
+      padding:9px 11px;
+      font-size:13px;
+      outline:none;
+      background:#ffffff;
+    }
+    input:focus, select:focus{
+      border-color:var(--blue);
+      box-shadow:0 0 0 1px rgba(37,99,235,.25);
+    }
+
+    .password-hints{
+      font-size:11px;
+      color:var(--muted);
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .password-hints span::before{
+      content:"• ";
+    }
+
+    .btn-submit{
+      margin-top:6px;
+      border:none;
+      border-radius:999px;
+      padding:11px 22px;
+      background:var(--green);
+      color:#ffffff;
+      font-weight:600;
+      font-size:15px;
+      cursor:pointer;
+      width:100%;
+    }
+    .btn-submit:hover{
+      background:var(--green-dark);
+    }
+
+    .account-login{
+      margin-top:14px;
+      font-size:13px;
+      text-align:center;
+      color:var(--muted);
+    }
+    .account-login a{
+      color:var(--blue-dark);
+      font-weight:600;
+    }
+
+    @media(max-width:1024px){
+      body{padding-top:160px;}
+      .account-shell{
+        grid-template-columns:1.1fr 1.1fr;
+      }
+      .account-figure{
+        opacity:.7;
+      }
+    }
+
+    @media(max-width:768px){
+      body{padding-top:180px;}
+      .nav{flex-direction:column;align-items:flex-start;gap:10px;}
+      .main-nav{justify-content:flex-start;}
+      .account-shell{
+        grid-template-columns:1fr;
+      }
+      .account-left{
+        padding:28px 24px 40px;
+      }
+      .account-right{
+        padding:24px 20px 28px;
+      }
+      .account-figure{
+        position:static;
+        width:200px;
+        margin:10px auto 0;
+        display:block;
+      }
+      .field-group{
+        flex-direction:column;
+      }
+    }
+
+    @media(max-width:640px){
+      .container{padding:0 10px;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ÜST BAR + HEADER -->
+  <div class="top-shell">
+    <div class="top-bar">
+      <div class="top-bar-inner">
+        <span>Dijitalleşen sanayinin pazaryerinde fason üretim taleplerinizi yönetin.</span>
+        <span>Ücretsiz teklif • Hızlı tedarik</span>
+      </div>
+    </div>
+
+    <header>
+      <nav class="nav">
+        <a href="index.html" class="logo">
+          <img src="images/cnclogo.png" alt="Cncitem">
+        </a>
+
+        <div class="main-nav">
+          <ul>
+            <li><a href="pazaryeri.html">PAZARYERİ</a></li>
+            <li><a href="fasonyeri.html">FASONYERİ</a></li>
+            <li><a href="haberyeri.html">HABERYERİ</a></li>
+            <li><a href="#">KAMPANYALAR</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <!-- buradan geri bu sayfaya dönüyor -->
+          <a href="hesabim.html" class="nav-card">
+            <div class="nav-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/>
+                <path d="M5 20c0-3.04 3.13-5 7-5s7 1.96 7 5"/>
+              </svg>
+            </div>
+            <span>Hesabım</span>
+          </a>
+
+          <button class="lang-trigger">
+            <span class="lang-dot"></span>
+            <span>TR • TRY</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+  </div>
+
+  <!-- HESAP OLUŞTUR SAYFASI -->
+  <section class="account-page">
+    <div class="container">
+      <div class="account-shell">
+
+        <!-- Sol taraf -->
+        <div class="account-left">
+          <div class="account-badge">
+            <span>Şirket kurmak kolay mı sanıyorsun?</span>
+          </div>
+
+          <h1>Her kafadan bir ses çıkar, sen onlara aldırma.</h1>
+          <p>
+            Cncitem’de hesabını oluşturarak fason üretim taleplerini, tekliflerini ve siparişlerini tek panelden yönet.
+          </p>
+
+          <span class="account-discount">%25 İNDİRİMİ KAÇIRMA!</span>
+
+          <!-- İstersen buraya gerçek bir görsel koy -->
+          <img src="images/hesabim/hero-kadin.png" alt="Girişimci görseli" class="account-figure">
+        </div>
+
+        <!-- Sağ taraf: form -->
+        <div class="account-right">
+          <h2>Hesap Oluşturun</h2>
+          <p class="sub">Birkaç adımda Cncitem hesabınızı oluşturun.</p>
+
+          <form action="#" method="post">
+            <div class="field">
+              <label for="country">Hizmet almak istediğiniz ülke</label>
+              <select id="country" name="country">
+                <option value="">Ülke seçin</option>
+                <option value="tr">Türkiye</option>
+                <option value="de">Almanya</option>
+                <option value="nl">Hollanda</option>
+                <option value="uk">Birleşik Krallık</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <div class="field">
+                <label for="first_name">Ad</label>
+                <input id="first_name" name="first_name" type="text" placeholder="Adınız">
+              </div>
+              <div class="field">
+                <label for="last_name">Soyad</label>
+                <input id="last_name" name="last_name" type="text" placeholder="Soyadınız">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field">
+                <label for="email">E-posta</label>
+                <input id="email" name="email" type="email" placeholder="ornek@cncitem.com">
+              </div>
+              <div class="field">
+                <label for="phone">Telefon Numarası</label>
+                <input id="phone" name="phone" type="tel" placeholder="+90 5xx xxx xx xx">
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field">
+                <label for="password">Şifre</label>
+                <input id="password" name="password" type="password" placeholder="Şifreniz">
+              </div>
+              <div class="field">
+                <label for="password2">Şifre Tekrar</label>
+                <input id="password2" name="password2" type="password" placeholder="Şifre tekrar">
+              </div>
+            </div>
+
+            <div class="password-hints">
+              <span>En az 8 karakter</span>
+              <span>1 büyük harf (A-Z)</span>
+              <span>1 küçük harf (a-z)</span>
+              <span>1 rakam (0-9)</span>
+              <span>1 sembol (!^+%&/?*_ vb.)</span>
+            </div>
+
+            <button type="submit" class="btn-submit">Kayıt Ol</button>
+
+            <div class="account-login">
+              Zaten hesabınız var mı?
+              <a href="#">Giriş Yap</a>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
